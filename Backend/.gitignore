@@ -1,0 +1,39 @@
+# 🔧 Visual Studio
+.vs/
+*.user
+*.suo
+
+# 🛠️ Build outputs
+bin/
+obj/
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+*.dll
+*.pdb
+*.cache
+
+# 🧪 Entity Framework DB cache (nếu dùng)
+*.dbmdl
+
+# 📁 Tạm thời / backup
+*.bak
+*.tmp
+*.swp
+
+# 🔐 Secrets & config (nếu chứa thông tin nhạy cảm)
+appsettings.json
+appsettings.Development.json
+secrets.json
+**/secrets.json
+
+# 📦 NuGet
+*.nupkg
+packages/
+project.lock.json
+
+data-mssql/
+**/data-mssql/
+
+.idea/
