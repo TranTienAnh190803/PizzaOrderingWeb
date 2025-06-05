@@ -37,6 +37,11 @@ namespace Backend.Models
         [Required]
         public UserRole Role { get; set; }
 
+        public byte[]? Avatar { get; set; }
+
+        public string? AvatarType { get; set; }
+
+
         public User(string username, string email, string password, string fullname, bool gender, string address, DateOnly dateOfBirth, UserRole role)
         {
             Username = username;

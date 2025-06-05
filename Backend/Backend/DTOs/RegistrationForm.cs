@@ -12,7 +12,7 @@ namespace Backend.DTOs
         public string Email { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        public string Password { get; set; } = "12345";
 
         [Required]
         public string Fullname { get; set; }

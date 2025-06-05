@@ -10,5 +10,7 @@ namespace Backend.Data
         }
 
         public required DbSet<User> Users { get; set; }
+
+        public required DbSet<Pizza> Pizza { get; set; }
     }
 }
