@@ -97,5 +97,15 @@ namespace Backend.Controllers
                 return StatusCode(response.StatusCode, response);
             }
         }
+
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete]
+        [Route("delete-account/{id}")]
+        public async Task<ActionResult<Response>> DeleteAccount([FromRoute] int id)
+        {
+            Response response = await _userService.DeleteAccount(id);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

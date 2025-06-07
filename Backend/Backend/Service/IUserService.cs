@@ -17,5 +17,7 @@ namespace Backend.Service
         public Task<Response> UploadImage(string? username, IFormFile formFile);
 
         public Task<Response> GetAvatar(string? username);
+
+        public Task<Response> DeleteAccount(int id);
     }
 }

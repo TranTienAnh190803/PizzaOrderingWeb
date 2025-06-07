@@ -297,5 +297,39 @@ namespace Backend.Service.Implement
 
             return response;
         }
+
+        public async Task<Response> DeleteAccount(int id)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+                if (user != null)
+                {
+                    _dbContext.Users.Remove(user);
+                    int result = await _dbContext.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        response.StatusCode = 200;
+                        response.Message = "Deleted Account Successfully";
+                    }
+                    else
+                    {
+                        response.StatusCode = 500;
+                        response.Message = "Delete Fail";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
     }
 }

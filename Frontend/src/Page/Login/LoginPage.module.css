@@ -1,0 +1,94 @@
+.login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.wrapper{
+    width: 420px;
+    padding: 30px 40px;
+    border-radius: 10px;
+    border: 3px solid black;
+    background-color: white;
+}
+
+.wrapper h1{
+    font-size: 36px;
+    text-align: center;
+}
+
+.wrapper .input-box{
+    width: 100%;
+    height: 50px;
+    margin: 30px 0px;
+    position: relative;
+}
+
+.input-box input{
+    width: 100%;
+    height: 100%;
+    border: 2px solid #EEE;
+    padding: 20px 45px 20px 20px;
+}
+
+.input-box .icon{
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.wrapper .remember-pass{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.remember-pass a{
+    text-decoration: none;
+}
+
+.remember-pass a:hover{
+    text-decoration: underline;
+}
+
+.wrapper button{
+    margin-bottom: 20px;
+    width: 100%;
+    height: 45px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.wrapper button:hover{
+    background-color: gray;
+    color: black;
+}
+
+.wrapper .register{
+    text-align: center;
+    margin: 10px 0px 20px;
+}
+
+.wrapper .register .to-register{
+    text-decoration: none;
+}
+
+.wrapper .register .to-register:hover{
+    text-decoration: underline;
+}
+
+.wrapper .error-message{
+    font-weight: bold;
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+}
