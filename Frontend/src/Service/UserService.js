@@ -23,9 +23,38 @@ class UserService {
         }
     }
 
+    static async getProfile(token) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-profile`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async getAvatar(token) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-avatar`, {
+                responseType: "blob",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return null;
+        }
+    }
+
 
     // Authentication Check
-    static isAuthenticate() {
+    static isAuthenticated() {
         const token = localStorage.getItem("token");
         if (token !== null)
             return true;
@@ -34,21 +63,21 @@ class UserService {
 
     static isAdmin() {
         const role = localStorage.getItem("role");
-        if (this.isAuthenticate() && role === "ADMIN")
+        if (this.isAuthenticated() && role === "ADMIN")
             return true;
         return false;
     }
 
     static isDeliveryMan() {
         const role = localStorage.getItem("role");
-        if (this.isAuthenticate() && role === "DELIVERY") 
+        if (this.isAuthenticated() && role === "DELIVERY") 
             return true;
         return false;
     }
 
     static isUser() {
         const role = localStorage.getItem("role");
-        if (this.isAuthenticate() && role === "USER")
+        if (this.isAuthenticated() && role === "USER")
             return true;
         return false;
     }
