@@ -52,6 +52,25 @@ class UserService {
         }
     }
 
+    static async uploadAvatar(token, imageFile) {
+        try {
+            if (!imageFile)
+                return;
+            const formData = new FormData();
+            formData.append("formFile", imageFile);
+
+            const response = await axios.patch(`${this.BASE_URL}/upload-avatar`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
 
     // Authentication Check
     static isAuthenticated() {

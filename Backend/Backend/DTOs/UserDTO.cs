@@ -13,6 +13,9 @@ namespace Backend.DTOs
         public string? Email { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? PhoneNumber { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Fullname { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -31,17 +34,16 @@ namespace Backend.DTOs
         public string? AvatarType { get; set; }
 
 
-        // Register Constructor
-        public UserDTO(string? username, string? email, string? fullname, bool? gender, string? address, DateOnly? dateOfBirth)
+        // Get Profile Constructor
+        public UserDTO(string? username, string? email, string? phoneNumber, string? fullname, bool? gender, string? address, DateOnly? dateOfBirth)
         {
             Username = username;
             Email = email;
+            PhoneNumber = phoneNumber;
             Fullname = fullname;
             Gender = gender;
             Address = address;
             DateOfBirth = dateOfBirth;
-            Avatar = null;
-            AvatarType = null;
         }
 
 
@@ -52,5 +54,6 @@ namespace Backend.DTOs
             AvatarType = avatarType;
         }
 
+    
     }
 }

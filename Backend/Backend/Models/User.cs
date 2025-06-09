@@ -20,6 +20,9 @@ namespace Backend.Models
         public string Email { get; set; }
 
         [Required]
+        public string PhoneNumber { get; set; }
+
+        [Required]
         public string Password { get; set; }
 
         [Required]
@@ -42,10 +45,11 @@ namespace Backend.Models
         public string? AvatarType { get; set; }
 
 
-        public User(string username, string email, string password, string fullname, bool gender, string address, DateOnly dateOfBirth, UserRole role)
+        public User(string username, string email, string phoneNumber, string password, string fullname, bool gender, string address, DateOnly dateOfBirth, UserRole role)
         {
             Username = username;
             Email = email;
+            PhoneNumber = phoneNumber;
             Password = password;
             Fullname = fullname;
             Gender = gender;

@@ -4,6 +4,7 @@ import {
   FaLock,
   FaMailBulk,
   FaMapPin,
+  FaPhone,
   FaUser,
 } from "react-icons/fa";
 import style from "./RegisterPage.module.css";
@@ -12,6 +13,7 @@ import { useState } from "react";
 import UserService from "../../Service/UserService";
 
 export default function RegisterPage() {
+  document.title = "Registration";
   const navigate = useNavigate();
   const [registrationForm, setRegistrationForm] = useState({});
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -87,6 +89,19 @@ export default function RegisterPage() {
               <div className={style["input-box"]}>
                 <input
                   type="text"
+                  placeholder="Phone Number"
+                  name="phoneNumber"
+                  value={registrationForm.phoneNumber}
+                  onChange={handleInputChange}
+                  required
+                />
+                <FaPhone className={style["icon"]} />
+              </div>
+            </div>
+            <div className={style["input-container"]}>
+              <div className={style["input-box2"]}>
+                <input
+                  type="text"
                   placeholder="Address"
                   name="address"
                   value={registrationForm.address}
@@ -96,6 +111,7 @@ export default function RegisterPage() {
                 <FaMapPin className={style["icon"]} />
               </div>
             </div>
+
             {/*  */}
             <div className={style["input-container"]}>
               <div className={style["input-box"]}>

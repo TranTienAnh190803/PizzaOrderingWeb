@@ -1,10 +1,11 @@
 import { FaLock, FaUser } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import style from "./LoginPage.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import UserService from "../../Service/UserService";
 
 export default function LoginPage() {
+  document.title = "Login";
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({});
 

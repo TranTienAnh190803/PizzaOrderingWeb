@@ -111,12 +111,12 @@ export default function Navbar() {
                   className="bg-light px-3 py-3 border-bottom d-flex"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="me-3" style={{ height: "100px" }}>
+                  <div className="me-3" style={{ width: "30%" }}>
                     <img
                       src={userAvatar ? userAvatar : defaultAvatar}
                       alt=""
                       className="rounded-circle border border-dark"
-                      style={{ height: "100%" }}
+                      style={{ width: "100%", aspectRatio: "1/1" }}
                     />
                   </div>
                   <div>
@@ -131,7 +131,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center gap-3 px-3 py-2"
-                    to="/"
+                    to="/profile"
                   >
                     <FaUser />
                     Profile

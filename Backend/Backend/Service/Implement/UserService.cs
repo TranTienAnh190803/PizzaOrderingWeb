@@ -35,6 +35,7 @@ namespace Backend.Service.Implement
                 User NewUser = new User(
                         registrationForm.Username,
                         registrationForm.Email,
+                        registrationForm.PhoneNumber,
                         _passwordHasher.HashPassword(null, registrationForm.Password),
                         registrationForm.Fullname,
                         registrationForm.Gender,
@@ -126,6 +127,7 @@ namespace Backend.Service.Implement
                 {
                     user.Fullname = userDTO.Fullname!;
                     user.Email = userDTO.Email!;
+                    user.PhoneNumber = userDTO.PhoneNumber!;
                     user.Gender = (bool)userDTO.Gender!;
                     user.Address = userDTO.Address!;
                     user.DateOfBirth = (DateOnly)userDTO.DateOfBirth!;
@@ -159,7 +161,7 @@ namespace Backend.Service.Implement
 
                 if (user != null)
                 {
-                    response.userDTO = new UserDTO(user.Username, user.Email, user.Fullname, user.Gender, user.Address, user.DateOfBirth);
+                    response.userDTO = new UserDTO(user.Username, user.Email, user.PhoneNumber, user.Fullname, user.Gender, user.Address, user.DateOfBirth);
                     response.StatusCode = 200;
                 }
                 else
@@ -186,6 +188,7 @@ namespace Backend.Service.Implement
                 User user = new User(
                     registrationForm.Username, 
                     registrationForm.Email, 
+                    registrationForm.PhoneNumber,
                     _passwordHasher.HashPassword(null, registrationForm.Password), 
                     registrationForm.Fullname, 
                     registrationForm.Gender, 

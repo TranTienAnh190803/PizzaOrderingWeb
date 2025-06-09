@@ -1,0 +1,99 @@
+.wrapper {
+    margin: 120px 2% 0 2%;
+    display: flex;
+    gap: 2%;
+}
+
+.wrapper .profile {
+    background-color: white;
+    border-radius: 30px;
+    padding: 20px;
+    width: 73%;
+}
+
+.wrapper .profile .form-container1{
+    display: flex;
+    column-gap: 60px;
+}
+
+.wrapper .profile .image{
+    width: 30%;
+    aspect-ratio: 1/1;
+}
+
+.wrapper .profile .image img{
+    width: 100%;
+    height: 100%;
+    border: black 3px solid;
+}
+
+.wrapper .profile .image:hover img{
+    cursor: pointer;
+    opacity: 0.6;
+    border: blue 3px solid;
+}
+
+.wrapper .profile .form-container1 .user-info{
+    width: 64%;
+    margin: auto 0px;
+}
+
+.wrapper .profile .form-container1 .user-info .info{
+    margin: 20px 0px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wrapper .profile .form-container1 .user-info .info input{
+    width: 70%;
+    padding: 6px 12px;
+}
+
+.wrapper .profile .form-container2{
+    margin: 50px 0px 0px 30px;
+    display: flex;
+    column-gap: 38px;
+}
+
+.wrapper .profile .form-container2 .gender{
+    width: 30%;
+}
+
+.wrapper .profile .form-container2 .gender .combo-box{
+    padding: 6px 12px;
+    width: 100%;
+}
+
+.wrapper .profile .form-container2 .birth{
+    width: 62%;
+}
+
+.wrapper .profile .form-container2 label{
+    margin-right: 15px;
+}
+
+.wrapper .profile .form-container2 input[type="text"]{
+    padding: 6px 12px;
+    background-color: #ddd;
+}
+
+.wrapper .profile .form-container2 input[type="date"]{
+    width: 100%;
+    padding: 6px 12px;
+}
+
+.wrapper .profile .form-container3{
+    margin: 50px 0px 0px 30px;
+}
+
+.wrapper .profile .form-container3 input[type="text"]{
+    width: 100%;
+    padding: 6px 12px;
+}
+
+.wrapper .btn-box{
+    text-align: end;
+    margin-top: 50px;
+}
