@@ -5,6 +5,7 @@ import defaultAvatar from "../../assets/DefaultAvatar.jpg";
 import style from "./ProfilePage.module.css";
 import UserService from "../../Service/UserService";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../Component/Footer";
 
 export default function ProfilePage() {
   document.title = "Profile";
@@ -47,7 +48,8 @@ export default function ProfilePage() {
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setProfile({ ...profile, [name]: value });
+    const parseValue = name === "gender" ? value === "true" : value;
+    setProfile({ ...profile, [name]: parseValue });
   };
 
   const handleAvatarChange = async (e) => {
@@ -63,17 +65,33 @@ export default function ProfilePage() {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (UserService.isAuthenticated()) {
+      const token = localStorage.getItem("token");
+      const response = await UserService.editProfile(token, profile);
+      console.log(response);
+      if (response.statusCode === 200) {
+        alert(response.message);
+        window.location.reload();
+      } else {
+        alert(response.message);
+      }
+    }
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar newAvatar={avatar} />
       <div className={style["wrapper"]}>
-        <Sidebar />
+        <Sidebar newAvatar={avatar} />
         <div className={`${style["profile"]} shadow`}>
           <h1>
             <b>Profile</b>
           </h1>
           <hr />
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className={style["form-container1"]}>
               <div className={style["image"]}>
                 <img
@@ -185,22 +203,18 @@ export default function ProfilePage() {
               />
             </div>
             <div className={style["btn-box"]}>
-              {!UserService.isAdmin() && (
-                <button
-                  type="submit"
-                  className="btn btn-outline-danger me-3"
-                  name="delete"
-                >
-                  Delete Account
-                </button>
-              )}
-              <button type="submit" className="btn btn-success" name="update">
+              <button
+                type="submit"
+                className="btn btn-success btn-lg"
+                name="update"
+              >
                 Update Profile
               </button>
             </div>
           </form>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

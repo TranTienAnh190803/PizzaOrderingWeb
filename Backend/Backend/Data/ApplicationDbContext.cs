@@ -9,8 +9,21 @@ namespace Backend.Data
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<PizzaPrice>()
+                .HasKey(p => new { p.PizzaId, p.PizzaSize });
+
+            modelBuilder.Entity<PizzaPrice>()
+                .HasOne(pp => pp.Pizza)
+                .WithMany(p => p.PizzaPrice)
+                .HasForeignKey(pp => pp.PizzaId);
+        }
+
         public required DbSet<User> Users { get; set; }
 
         public required DbSet<Pizza> Pizza { get; set; }
+
+        public required DbSet<PizzaPrice> PizzaPrices { get; set; }
     }
 }

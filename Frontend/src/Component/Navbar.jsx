@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import defaultAvatar from "../assets/DefaultAvatar.jpg";
 
-export default function Navbar() {
+export default function Navbar({ newAvatar }) {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const [userAvatar, setUserAvatar] = useState(null);
@@ -48,6 +48,10 @@ export default function Navbar() {
     fetchUserInfo();
     fetchAvatar();
   }, []);
+
+  useEffect(() => {
+    fetchAvatar();
+  }, [newAvatar]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3 fs-6">
@@ -162,7 +166,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     className="dropdown-item d-flex align-items-center gap-3 px-3 py-2"
-                    to="/"
+                    to="/password-changing"
                   >
                     <FaLock />
                     Change Password

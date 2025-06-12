@@ -5,6 +5,7 @@ import RegisterPage from "./Page/Register/RegisterPage";
 import HomePage from "./Page/Home/HomePage";
 import UserService from "./Service/UserService";
 import ProfilePage from "./Page/UserProfile/ProfilePage";
+import PasswordChangingPage from "./Page/PasswordChanging/PasswordChangingPage";
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
             {UserService.isAuthenticated() && (
               <>
                 <Route path="/profile" element={<ProfilePage />} />
+                <Route
+                  path="/password-changing"
+                  element={<PasswordChangingPage />}
+                />
               </>
             )}
           </Routes>

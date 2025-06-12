@@ -2,8 +2,9 @@
 {
     public enum PizzaSize
     {
-        Large,
+        Small,
         Medium,
-        Small
+        Large,
+        ExtraLarge
     }
 }

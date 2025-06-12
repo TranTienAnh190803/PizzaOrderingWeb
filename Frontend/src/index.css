@@ -7,3 +7,15 @@
 body {
   background-color: #F1F1F1 !important;
 }
+
+.footer-facebook:hover{
+  color: #4267B2 !important;
+}
+
+.footer-youtube:hover{
+  color: #FF0000 !important;
+}
+
+.footer-github:hover{
+  color: #CCC !important;
+}

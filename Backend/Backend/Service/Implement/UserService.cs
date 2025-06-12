@@ -54,7 +54,7 @@ namespace Backend.Service.Implement
                 }
                 else
                 {
-                    response.StatusCode = 500;
+                    response.StatusCode = 400;
                     response.Message = "Register Fail.";
                 }
             }
@@ -207,7 +207,7 @@ namespace Backend.Service.Implement
                 }
                 else
                 {
-                    response.StatusCode = 500;
+                    response.StatusCode = 400;
                     response.Message = "Register Delivery Man Fail.";
                 }
 
@@ -233,7 +233,7 @@ namespace Backend.Service.Implement
                 {
                     if (formFile == null)
                     {
-                        response.StatusCode = 500;
+                        response.StatusCode = 400;
                         response.Message = "No File Uploaded.";
                     }
                     else
@@ -321,9 +321,64 @@ namespace Backend.Service.Implement
                     }
                     else
                     {
-                        response.StatusCode = 500;
+                        response.StatusCode = 400;
                         response.Message = "Delete Fail";
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> ChangePassword(string? username, PasswordChangingForm passwordChangingForm)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var user = _dbContext.Users.FirstOrDefault(x => x.Username == username);
+
+                if (user != null)
+                {
+                    if (_passwordHasher.VerifyHashedPassword(null, user.Password, passwordChangingForm.OldPassword) == PasswordVerificationResult.Success)
+                    {
+                        if (passwordChangingForm.NewPassword == passwordChangingForm.ConfirmPassword)
+                        {
+                            user.Password = _passwordHasher.HashPassword(null, passwordChangingForm.NewPassword);
+                            int result = await _dbContext.SaveChangesAsync();
+
+                            if (result > 0)
+                            {
+                                response.StatusCode = 200;
+                                response.Message = "Changed Password Successfully";
+                            }
+                            else
+                            {
+                                response.StatusCode = 400;
+                                response.Message = "Change Password Fail";
+                            }
+                        }
+                        else
+                        {
+                            response.StatusCode = 400;
+                            response.Message = "Re-entered password does not match";
+                        }
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        response.Message = "Wrong Password";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "User Not Found";
                 }
             }
             catch (Exception ex)

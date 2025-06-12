@@ -2,6 +2,7 @@
     margin: 120px 2% 0 2%;
     display: flex;
     gap: 2%;
+    min-height: 100vh;
 }
 
 .wrapper .profile {
@@ -9,6 +10,7 @@
     border-radius: 30px;
     padding: 20px;
     width: 73%;
+    height: fit-content;
 }
 
 .wrapper .profile .form-container1{
@@ -54,7 +56,7 @@
 .wrapper .profile .form-container2{
     margin: 50px 0px 0px 30px;
     display: flex;
-    column-gap: 38px;
+    column-gap: 4%;
 }
 
 .wrapper .profile .form-container2 .gender{
@@ -67,7 +69,7 @@
 }
 
 .wrapper .profile .form-container2 .birth{
-    width: 62%;
+    width: 66%;
 }
 
 .wrapper .profile .form-container2 label{

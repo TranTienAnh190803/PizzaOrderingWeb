@@ -40,7 +40,7 @@ namespace Backend.Controllers
 
 
         [Authorize]
-        [HttpPatch]
+        [HttpPut]
         [Route("edit-profile")]
         public async Task<ActionResult<Response>> EditProfile([FromBody] UserDTO userDTO)
         {
@@ -105,6 +105,17 @@ namespace Backend.Controllers
         public async Task<ActionResult<Response>> DeleteAccount([FromRoute] int id)
         {
             Response response = await _userService.DeleteAccount(id);
+            return StatusCode(response.StatusCode, response);
+        }
+
+
+        [Authorize]
+        [HttpPatch]
+        [Route("change-password")]
+        public async Task<ActionResult<Response>> ChangePassword([FromBody] PasswordChangingForm passwordChangingForm)
+        {
+            string username = User.Identity.Name;
+            Response response = await _userService.ChangePassword(username, passwordChangingForm);
             return StatusCode(response.StatusCode, response);
         }
     }

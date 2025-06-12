@@ -19,5 +19,7 @@ namespace Backend.Service
         public Task<Response> GetAvatar(string? username);
 
         public Task<Response> DeleteAccount(int id);
+
+        public Task<Response> ChangePassword(string? username, PasswordChangingForm passwordChangingForm);
     }
 }

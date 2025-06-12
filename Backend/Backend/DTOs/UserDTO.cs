@@ -33,6 +33,7 @@ namespace Backend.DTOs
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? AvatarType { get; set; }
 
+        public UserDTO() { }
 
         // Get Profile Constructor
         public UserDTO(string? username, string? email, string? phoneNumber, string? fullname, bool? gender, string? address, DateOnly? dateOfBirth)

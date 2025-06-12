@@ -10,7 +10,7 @@ import {
   FaUser,
 } from "react-icons/fa";
 
-export default function Sidebar() {
+export default function Sidebar({ newAvatar }) {
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState(null);
   const [profile, setProfile] = useState({});
@@ -37,11 +37,12 @@ export default function Sidebar() {
 
   useEffect(() => {
     fetchProfile();
+    fetchUserAvatar();
   }, []);
 
   useEffect(() => {
     fetchUserAvatar();
-  }, [avatar]);
+  }, [newAvatar]);
 
   const handleLogout = () => {
     UserService.logout();
@@ -100,7 +101,7 @@ export default function Sidebar() {
         ""
       )}
       <Link
-        to="/change-password"
+        to="/password-changing"
         className="list-group-item list-group-item-action border-0"
       >
         <FaLock className="me-3" />

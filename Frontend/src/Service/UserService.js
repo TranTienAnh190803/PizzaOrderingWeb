@@ -72,6 +72,48 @@ class UserService {
         }
     }
 
+    static async editProfile(token, profile) {
+        try {
+            const response = await axios.put(`${this.BASE_URL}/edit-profile`, profile, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async deleteAccount(token) {
+        try {
+            const response = await axios.delete(`${this.BASE_URL}/delete-account`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async changePassword(token, passwordForm) {
+        try {
+            const response = await axios.patch(`${this.BASE_URL}/change-password`, passwordForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
     // Authentication Check
     static isAuthenticated() {
         const token = localStorage.getItem("token");

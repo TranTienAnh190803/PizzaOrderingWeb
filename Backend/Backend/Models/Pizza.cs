@@ -17,17 +17,13 @@ namespace Backend.Models
         public string PizzaDescription { get; set; }
 
         [Required]
-        [Precision(18, 2)]
-        public decimal Price { get; set; }
-
-        [Required]
+        [Range(0, 100)]
         public int Discound {  get; set; } = 0;
-
-        [NotMapped]
-        public decimal OfficialPrice => Price * (1 - (Discound / 100));
 
         public byte[]? Image { get; set; }
 
         public string? ImageType { get; set; }
+
+        public ICollection<PizzaPrice> PizzaPrice { get; set; }
     }
 }
