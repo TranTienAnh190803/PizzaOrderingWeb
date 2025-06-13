@@ -14,9 +14,11 @@ namespace Backend.Models
         public PizzaSize PizzaSize { get; set; }
 
         [Precision(18, 2)]
+        [Required]
         public decimal Price { get; set; }
 
+        [Precision(18, 2)]
         [NotMapped]
-        public decimal OfficialPrice => Price * (1 - (Pizza.Discound / 100m));
+        public decimal OfficialPrice => Price * (1 - (Pizza.Discount / 100m));
     }
 }

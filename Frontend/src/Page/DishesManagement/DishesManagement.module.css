@@ -1,0 +1,22 @@
+.wrapper{
+    margin-top: 82px;
+    height: 100vh;
+}
+
+.navbar2{
+    padding: 20px;
+    background-color: darkred;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+}
+
+.navbar2 .item{
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.navbar2 .item:hover{
+    transform: scale(1.2);
+}

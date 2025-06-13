@@ -18,7 +18,7 @@ namespace Backend.Models
 
         [Required]
         [Range(0, 100)]
-        public int Discound {  get; set; } = 0;
+        public int Discount {  get; set; } = 0;
 
         public byte[]? Image { get; set; }
 

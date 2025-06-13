@@ -11,6 +11,7 @@ namespace Backend.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Pizza Price
             modelBuilder.Entity<PizzaPrice>()
                 .HasKey(p => new { p.PizzaId, p.PizzaSize });
 
@@ -18,6 +19,25 @@ namespace Backend.Data
                 .HasOne(pp => pp.Pizza)
                 .WithMany(p => p.PizzaPrice)
                 .HasForeignKey(pp => pp.PizzaId);
+
+            // Cart Items
+            modelBuilder.Entity<CartItems>()
+                .HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .IsRequired(true);
+
+            modelBuilder.Entity<CartItems>()
+                .HasOne(c => c.Pizza)
+                .WithMany()
+                .HasForeignKey(c => c.PizzaId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<CartItems>()
+                .HasOne(c => c.OtherDishes)
+                .WithMany()
+                .HasForeignKey(c => c.DishesId)
+                .IsRequired(false);
         }
 
         public required DbSet<User> Users { get; set; }
@@ -25,5 +45,9 @@ namespace Backend.Data
         public required DbSet<Pizza> Pizza { get; set; }
 
         public required DbSet<PizzaPrice> PizzaPrices { get; set; }
+
+        public required DbSet<OtherDishes> OtherDishes { get; set; }
+
+        public required DbSet<CartItems> CartItems { get; set; }
     }
 }

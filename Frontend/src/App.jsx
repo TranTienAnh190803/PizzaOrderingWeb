@@ -6,6 +6,7 @@ import HomePage from "./Page/Home/HomePage";
 import UserService from "./Service/UserService";
 import ProfilePage from "./Page/UserProfile/ProfilePage";
 import PasswordChangingPage from "./Page/PasswordChanging/PasswordChangingPage";
+import DishesManagement from "./Page/DishesManagement/DishesManagement";
 
 function App() {
   return (
@@ -24,6 +25,15 @@ function App() {
                 <Route
                   path="/password-changing"
                   element={<PasswordChangingPage />}
+                />
+              </>
+            )}
+
+            {UserService.isAdmin() && (
+              <>
+                <Route
+                  path="/admin/dishes-management"
+                  element={<DishesManagement />}
                 />
               </>
             )}
