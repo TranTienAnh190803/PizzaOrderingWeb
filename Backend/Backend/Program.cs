@@ -27,6 +27,7 @@ builder.Services
 
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPizzaService, PizzaService>();
 builder.Services.AddScoped<IPasswordHasher<User> ,PasswordHasher<User>>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

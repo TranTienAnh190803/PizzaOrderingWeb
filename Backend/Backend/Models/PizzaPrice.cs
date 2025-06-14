@@ -7,9 +7,9 @@ namespace Backend.Models
 {
     public class PizzaPrice
     {
-        public long PizzaId { get; set; }
+        public long? PizzaId { get; set; }
 
-        public Pizza Pizza { get; set; }
+        public Pizza? Pizza { get; set; }
 
         public PizzaSize PizzaSize { get; set; }
 
@@ -19,6 +19,8 @@ namespace Backend.Models
 
         [Precision(18, 2)]
         [NotMapped]
-        public decimal OfficialPrice => Price * (1 - (Pizza.Discount / 100m));
+        public decimal OfficialPrice => Pizza == null 
+            ? Price 
+            : Price * (1 - (Pizza.Discount / 100m));
     }
 }

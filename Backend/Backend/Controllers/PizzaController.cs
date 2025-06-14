@@ -17,12 +17,42 @@ namespace Backend.Controllers
             _pizzaService = pizzaService;
         }
 
-        //[Authorize(Roles = "ADMIN")]
-        //[HttpPost]
-        //[Route("add-pizza")]
-        //public async Task<ActionResult<Response>> AddPizza()
-        //{
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost]
+        [Route("add-pizza")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<Response>> AddPizza([FromForm] PizzaForm pizzaForm)
+        {
+            Response response = await _pizzaService.AddPizza(pizzaForm);
+            return StatusCode(response.StatusCode, response);
+        }
 
-        //}
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("get-pizza")]
+        public async Task<ActionResult<Response>> GetPizza()
+        {
+            Response response = await _pizzaService.GetPizza();
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut]
+        [Route("edit-pizza/{pizzaId}")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<Response>> EditPizza([FromForm] PizzaForm pizzaForm, [FromRoute] long pizzaId)
+        {
+            Response response = await _pizzaService.EditPizza(pizzaForm, pizzaId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete]
+        [Route("delete-pizza/{pizzaId}")]
+        public async Task<ActionResult<Response>> DeletePizza([FromRoute] long pizzaId)
+        {
+            Response response = await _pizzaService.DeletePizza(pizzaId);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

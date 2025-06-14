@@ -15,5 +15,11 @@ namespace Backend.DTOs
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public UserDTO? userDTO { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public PizzaDTO? pizzaDTO { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public List<PizzaDTO> pizzas { get; set; }
     }
 }
