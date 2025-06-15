@@ -75,7 +75,7 @@ export default function Navbar({ newAvatar }) {
               </li>
               <li className="nav-item mx-2">
                 <Link className="nav-link" to="/admin/dishes-management">
-                  Pizza
+                  Menu
                 </Link>
               </li>
               <li className="nav-item mx-2">

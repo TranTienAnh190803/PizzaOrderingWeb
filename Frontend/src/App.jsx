@@ -7,6 +7,7 @@ import UserService from "./Service/UserService";
 import ProfilePage from "./Page/UserProfile/ProfilePage";
 import PasswordChangingPage from "./Page/PasswordChanging/PasswordChangingPage";
 import DishesManagement from "./Page/DishesManagement/DishesManagement";
+import PizzaAdding from "./Page/PizzaAdding/PizzaAdding";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                   path="/admin/dishes-management"
                   element={<DishesManagement />}
                 />
+                <Route path="/admin/pizza-adding" element={<PizzaAdding />} />
               </>
             )}
           </Routes>

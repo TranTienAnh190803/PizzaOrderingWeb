@@ -1,6 +1,6 @@
 .wrapper{
     margin-top: 82px;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .navbar2{
@@ -19,4 +19,25 @@
 
 .navbar2 .item:hover{
     transform: scale(1.2);
+}
+
+.dishes-container{
+    background-color: white;
+    width: 85%;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+.dishes-container .image-box{
+    width: 25%;
+}
+
+.dishes-container .image-box img{
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
+.dishes-container th,
+.dishes-container td{
+    padding: 20px;
 }
