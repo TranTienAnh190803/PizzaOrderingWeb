@@ -56,6 +56,22 @@ class DishesService {
             return error.response.data;
         }
     }
+
+    static async uploadImage(token, formData) {
+        try {
+            const response = await axios.post(`${this.BASE_URL}/upload-image`, formData, {
+                responseType: "blob",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return null;
+        }
+    }
 }
 
 export default DishesService;

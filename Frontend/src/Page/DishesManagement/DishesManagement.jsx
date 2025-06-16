@@ -91,7 +91,7 @@ export default function DishesManagement() {
                 {noPizza.check ? (
                   <p className="text-center text-danger">{noPizza.message}</p>
                 ) : (
-                  <table class="table">
+                  <table className="table">
                     <thead className="fs-5">
                       <tr>
                         <th scope="col"></th>

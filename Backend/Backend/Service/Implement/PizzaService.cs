@@ -190,5 +190,72 @@ namespace Backend.Service.Implement
 
             return response;
         }
+
+        public async Task<Response> UploadImage(IFormFile imageFile)
+        {
+            Response response = new Response();
+
+            try
+            {
+                if (imageFile != null)
+                {
+                    var ms = new MemoryStream();
+                    await imageFile.CopyToAsync(ms);
+                    var image = ms.ToArray();
+
+                    response.StatusCode = 200;
+                    response.pizzaDTO = new PizzaDTO { Image = image, ImageType = imageFile.ContentType };
+                }
+                else
+                {
+                    response.StatusCode = 400;
+                    response.Message = "No File Selected";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> GetSelectedPizza(long pizzaId)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var pizza = await _dbContext.Pizza.FindAsync(pizzaId);
+
+                if (pizza != null)
+                {
+                    response.pizzaDTO = new PizzaDTO
+                    {
+                        Id = pizza.Id,
+                        PizzaName = pizza.PizzaName,
+                        PizzaDescription = pizza.PizzaDescription,
+                        Discount = pizza.Discount,
+                        ImageBase64 = $"data:{pizza.ImageType};Base64,{Convert.ToBase64String(pizza.Image!)}",
+                        ImageType = pizza.ImageType,
+                        Prices = pizza.PizzaPrice
+                    };
+                    response.StatusCode = 200;
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
     }
 }

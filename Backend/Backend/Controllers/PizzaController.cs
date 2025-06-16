@@ -54,5 +54,30 @@ namespace Backend.Controllers
             Response response = await _pizzaService.DeletePizza(pizzaId);
             return StatusCode(response.StatusCode, response);
         }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost]
+        [Route("upload-image")]
+        public async Task<IActionResult> UploadImage([FromForm] IFormFile imageFile)
+        {
+            Response response = await _pizzaService.UploadImage(imageFile);
+            if (response.StatusCode == 200)
+            {
+                return File(response.pizzaDTO.Image, response.pizzaDTO.ImageType);
+            }
+            else
+            {
+                return StatusCode(response.StatusCode, response.Message);
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("get-selected-pizza/{pizzaId}")]
+        public async Task<ActionResult<Response>> getSelectedPizza([FromRoute] long pizzaId)
+        {
+            Response response = await _pizzaService.GetSelectedPizza(pizzaId);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
