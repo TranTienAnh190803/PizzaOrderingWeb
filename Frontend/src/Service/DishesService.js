@@ -30,7 +30,7 @@ class DishesService {
 
     static async editPizza(token, pizzaForm, pizzaId) {
         try {
-            const response = await axios.put(`${this.BASE_URL}/edit-pizza/${pizzaId}`, pizzaForm, {
+            const response = await axios.patch(`${this.BASE_URL}/edit-pizza/${pizzaId}`, pizzaForm, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     "Content-Type": "multipart/form-data"
@@ -70,6 +70,20 @@ class DishesService {
             return response.data;
         } catch (error) {
             return null;
+        }
+    }
+
+    static async getSelectedPizza(token, pizzaId) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-selected-pizza/${pizzaId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
         }
     }
 }

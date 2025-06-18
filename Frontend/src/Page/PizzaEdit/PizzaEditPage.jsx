@@ -1,46 +1,73 @@
-import { useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import style from "./PizzaEditPage.module.css";
 import Navbar from "../../Component/Navbar";
-import style from "./PizzaAdding.module.css";
-import defaultImage from "../../assets/DefaultImage.jpg";
 import Footer from "../../Component/Footer";
+import { useEffect, useRef, useState } from "react";
 import UserService from "../../Service/UserService";
 import DishesService from "../../Service/DishesService";
-import { useNavigate } from "react-router-dom";
 
-export default function PizzaAdding() {
-  document.title = "Pizza Adding";
+export default function PizzaEditPage() {
   const navigate = useNavigate();
-  const imageRef = useRef();
+  const { pizzaId } = useParams();
   const [prices, setPrice] = useState([
     { size: "Small", enum: 0, checkBox: false, price: 0 },
     { size: "Medium", enum: 1, checkBox: false, price: 0 },
     { size: "Large", enum: 2, checkBox: false, price: 0 },
     { size: "Extra Large", enum: 3, checkBox: false, price: 0 },
   ]);
-  const [pizzaForm, setPizzaForm] = useState({
+  const [selectedPizza, setSelectedPizza] = useState({
+    id: 0,
     pizzaName: "",
     pizzaDescription: "",
     discount: 0,
-    image: null,
+    imageBase64: null,
+    imageEdit: null,
   });
   const [image, setImage] = useState(null);
+  const imageRef = useRef();
+
+  const fetchSelectedPizza = async () => {
+    if (UserService.isAuthenticated()) {
+      const token = localStorage.getItem("token");
+      const response = await DishesService.getSelectedPizza(token, pizzaId);
+      if (response.statusCode === 200) {
+        const pizza = response.pizzaDTO;
+        setSelectedPizza(pizza);
+        setPrice((prevPrice) => {
+          return prevPrice.map((value) => {
+            const match = pizza.prices.find(
+              (element) => element.pizzaSize === value.enum
+            );
+            if (match) {
+              return { ...value, checkBox: true, price: match.price };
+            }
+            return value;
+          });
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchSelectedPizza();
+  }, []);
 
   const handleCheckBox = (e, i) => {
-    const check = e.target.checked;
+    const checked = e.target.checked;
 
-    setPrice((prevPrices) => {
-      return prevPrices.map((value, index) => {
-        return index === i ? { ...value, checkBox: check } : value;
+    setPrice((prevPrice) => {
+      return prevPrice.map((value, index) => {
+        return index === i ? { ...value, checkBox: checked } : value;
       });
     });
   };
 
   const handleSizePrice = (e, i) => {
-    const inputValue = e.target.value;
+    const value = e.target.value;
 
-    setPrice((prevPrices) => {
-      return prevPrices.map((value, index) => {
-        return index === i ? { ...value, price: inputValue } : value;
+    setPrice((prePrice) => {
+      return prePrice.map((element, index) => {
+        return i === index ? { ...element, price: value } : element;
       });
     });
   };
@@ -48,20 +75,20 @@ export default function PizzaAdding() {
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setPizzaForm({ ...pizzaForm, [name]: value });
+    setSelectedPizza({ ...selectedPizza, [name]: value });
   };
 
   const handleUploadImage = async (e) => {
     if (UserService.isAdmin()) {
       const token = localStorage.getItem("token");
-      const imageFile = e.target.files[0];
+      const file = e.target.files[0];
       const formData = new FormData();
-      formData.append("imageFile", imageFile);
-      const response = await DishesService.uploadImage(token, formData);
+      formData.append("imageFile", file);
 
       try {
+        const response = await DishesService.uploadImage(token, formData);
         setImage(URL.createObjectURL(response));
-        setPizzaForm({ ...pizzaForm, image: imageFile });
+        setSelectedPizza({ ...selectedPizza, imageEdit: file });
       } catch (error) {
         alert(error);
       }
@@ -72,29 +99,27 @@ export default function PizzaAdding() {
     e.preventDefault();
 
     if (UserService.isAdmin()) {
-      if (image !== null && pizzaForm.image !== null) {
-        const token = localStorage.getItem("token");
-        const closePrice = prices.filter((value) => value.checkBox);
+      const token = localStorage.getItem("token");
+      const closePrice = prices.filter((value) => value.checkBox);
 
-        const formData = new FormData();
-        formData.append("pizzaName", pizzaForm.pizzaName);
-        formData.append("pizzaDescription", pizzaForm.pizzaDescription);
-        formData.append("discount", pizzaForm.discount);
-        closePrice.forEach((value, index) => {
-          formData.append(`prices[${index}].pizzaSize`, value.enum);
-          formData.append(`prices[${index}].price`, value.price);
-        });
-        formData.append("image", pizzaForm.image);
+      const formData = new FormData();
+      formData.append("pizzaName", selectedPizza.pizzaName);
+      formData.append("pizzaDescription", selectedPizza.pizzaDescription);
+      formData.append("discount", selectedPizza.discount);
+      closePrice.forEach((value, index) => {
+        formData.append(`prices[${index}].pizzaSize`, value.enum);
+        formData.append(`prices[${index}].price`, value.price);
+      });
+      if (image !== null) {
+        formData.append("image", selectedPizza.imageEdit);
+      }
 
-        const response = await DishesService.addPizza(token, formData);
-        if (response.statusCode === 200) {
-          alert(response.message);
-          navigate("/admin/dishes-management");
-        } else {
-          alert(response.message);
-        }
+      const response = await DishesService.editPizza(token, formData, pizzaId);
+      if (response.statusCode === 200) {
+        alert(response.message);
+        navigate("/admin/dishes-management");
       } else {
-        alert("Please Upload Image To Complete");
+        alert(response.message);
       }
     }
   };
@@ -105,7 +130,7 @@ export default function PizzaAdding() {
       <div className={style["wrapper"]}>
         <div className={`${style["pizza-form"]} shadow my-5`}>
           <h1>
-            <b>Add Pizza</b>
+            <b>Pizza Information</b>
           </h1>
           <hr />
           <form onSubmit={handleSubmit}>
@@ -121,7 +146,7 @@ export default function PizzaAdding() {
                   type="text"
                   name="pizzaName"
                   className="form-control border-secondary"
-                  value={pizzaForm.pizzaName}
+                  value={selectedPizza.pizzaName}
                   onChange={handleInputChange}
                   required
                 />
@@ -134,7 +159,7 @@ export default function PizzaAdding() {
                   type="text"
                   name="pizzaDescription"
                   className="form-control border-secondary"
-                  value={pizzaForm.pizzaDescription}
+                  value={selectedPizza.pizzaDescription}
                   onChange={handleInputChange}
                   required
                 />
@@ -149,7 +174,7 @@ export default function PizzaAdding() {
                   min={0}
                   max={100}
                   className="form-control border-secondary"
-                  value={pizzaForm.discount}
+                  value={selectedPizza.discount}
                   onChange={handleInputChange}
                   required
                 />
@@ -161,13 +186,14 @@ export default function PizzaAdding() {
             <div className={`${style["input-container"]} p-4`}>
               {prices.map((value, index) => {
                 return (
-                  <div className={style["input-box"]}>
+                  <div className={style["input-box"]} key={index}>
                     <p>
                       <label>
                         <input
                           type="checkbox"
                           className="form-check-input border-secondary me-1"
                           value={index}
+                          checked={value.checkBox}
                           onChange={(e) => {
                             handleCheckBox(e, index);
                           }}
@@ -211,13 +237,13 @@ export default function PizzaAdding() {
             </h4>
             <div className={`${style["image-box"]} text-center`}>
               <img
-                src={image ? image : defaultImage}
+                src={image ? image : selectedPizza.imageBase64}
                 className="shadow my-3"
                 alt=""
               />
             </div>
             <div className="text-end p-4">
-              <button className="btn btn-lg btn-success">Add Pizza</button>
+              <button className="btn btn-lg btn-warning">Edit Pizza</button>
             </div>
           </form>
         </div>

@@ -37,7 +37,7 @@ namespace Backend.Controllers
         }
 
         [Authorize(Roles = "ADMIN")]
-        [HttpPut]
+        [HttpPatch]
         [Route("edit-pizza/{pizzaId}")]
         [Consumes("multipart/form-data")]
         public async Task<ActionResult<Response>> EditPizza([FromForm] PizzaForm pizzaForm, [FromRoute] long pizzaId)

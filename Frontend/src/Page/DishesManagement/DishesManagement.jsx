@@ -110,13 +110,20 @@ export default function DishesManagement() {
                             <td className={style["image-box"]}>
                               <img src={pizza.imageBase64} alt="pizza" />
                             </td>
-                            <td>{pizza.pizzaName}</td>
+                            <td>
+                              <b>{pizza.pizzaName}</b>
+                            </td>
                             <td style={{ width: "30%" }}>
                               {pizza.pizzaDescription}
                             </td>
                             <td className="text-center">{pizza.discount}%</td>
                             <td style={{ width: "15%" }}>
-                              <Link className="btn btn-primary me-2">View</Link>
+                              <Link
+                                className="btn btn-primary me-2"
+                                to={`/admin/pizza-edit/${pizza.id}`}
+                              >
+                                View
+                              </Link>
                               <button
                                 className="btn btn-outline-danger"
                                 onClick={() => {

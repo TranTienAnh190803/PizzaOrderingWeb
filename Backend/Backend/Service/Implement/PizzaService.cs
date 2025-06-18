@@ -81,6 +81,13 @@ namespace Backend.Service.Implement
                         ? $"data:{x.ImageType};base64,{Convert.ToBase64String(x.Image)}"
                         : null,
                     ImageType = x.ImageType,
+                    Prices = x.PizzaPrice.Where(y => y.PizzaId == x.Id).Select(y => new PizzaPriceDTO
+                    {
+                        PizzaId = y.PizzaId,
+                        PizzaSize = y.PizzaSize,
+                        Price = y.Price,
+                        OfficialPrice = y.OfficialPrice
+                    }).ToList(),
                 }).ToListAsync();
 
                 if (pizzas != null)
@@ -109,7 +116,7 @@ namespace Backend.Service.Implement
 
             try
             {
-                var pizza = await _dbContext.Pizza.FindAsync(pizzaId);
+                var pizza = await _dbContext.Pizza.Include(x => x.PizzaPrice).FirstOrDefaultAsync(x => x.Id == pizzaId);
 
                 if (pizza != null)
                 {
@@ -120,10 +127,12 @@ namespace Backend.Service.Implement
                         var imageData = ms.ToArray();
 
                         pizza.Image = imageData;
+                        pizza.ImageType = pizzaForm.Image.ContentType;
                     }
                     pizza.PizzaName = pizzaForm.PizzaName;
                     pizza.PizzaDescription = pizzaForm.PizzaDescription;
                     pizza.Discount = pizzaForm.Discount;
+                    pizza.PizzaPrice = pizzaForm.Prices;
                     int result = await _dbContext.SaveChangesAsync();
 
                     if (result > 0)
@@ -231,6 +240,14 @@ namespace Backend.Service.Implement
 
                 if (pizza != null)
                 {
+                    var pizzaPrice = await _dbContext.PizzaPrices.Where(x => x.PizzaId == pizzaId).Select(x => new PizzaPriceDTO
+                    {
+                        PizzaId = x.PizzaId,
+                        PizzaSize = x.PizzaSize,
+                        Price = x.Price,
+                        OfficialPrice = x.OfficialPrice,
+                    }).ToListAsync();
+
                     response.pizzaDTO = new PizzaDTO
                     {
                         Id = pizza.Id,
@@ -239,7 +256,7 @@ namespace Backend.Service.Implement
                         Discount = pizza.Discount,
                         ImageBase64 = $"data:{pizza.ImageType};Base64,{Convert.ToBase64String(pizza.Image!)}",
                         ImageType = pizza.ImageType,
-                        Prices = pizza.PizzaPrice
+                        Prices = pizzaPrice
                     };
                     response.StatusCode = 200;
                 }

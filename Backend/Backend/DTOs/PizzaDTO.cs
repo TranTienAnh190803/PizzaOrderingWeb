@@ -27,6 +27,6 @@ namespace Backend.DTOs
         public string? ImageType { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public ICollection<PizzaPrice>? Prices { get; set; }
+        public ICollection<PizzaPriceDTO>? Prices { get; set; }
     }
 }
