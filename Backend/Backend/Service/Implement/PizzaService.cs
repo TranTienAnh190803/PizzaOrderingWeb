@@ -274,5 +274,248 @@ namespace Backend.Service.Implement
 
             return response;
         }
+
+        public async Task<Response> AddOtherDishes(OtherDishesForm dishesForm)
+        {
+            Response response = new Response();
+
+            try
+            {
+                if (dishesForm.Image != null)
+                {
+                    var ms = new MemoryStream();
+                    await dishesForm.Image.CopyToAsync(ms);
+                    var image = ms.ToArray();
+
+                    OtherDishes dishes = new OtherDishes
+                    {
+                        Name = dishesForm.Name,
+                        DishesType = dishesForm.DishesType,
+                        Description = dishesForm.Description,
+                        Discount = dishesForm.Discount,
+                        Price = dishesForm.Price,
+                        Image = image,
+                        ImageType = dishesForm.Image.ContentType
+                    };
+
+                    _dbContext.OtherDishes.Add(dishes);
+                    int result = await _dbContext.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        response.StatusCode = 200;
+                        response.Message = dishesForm.DishesType == Enums.DishesType.DRINK
+                            ? "Added Drink Successfully"
+                            : "Added Appetizer Successfully";
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        response.Message = "Add Fail";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 400;
+                    response.Message = "Please Provide Image Of The Dish";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> GetAllDishes()
+        {
+            Response response = new Response();
+
+            try
+            {
+                response.noDrink = false;
+                response.noAppetizer = false;
+
+                List<OtherDishesDTO> otherDishes = await _dbContext.OtherDishes.Select(x => new OtherDishesDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    DishesType = x.DishesType,
+                    Discount = x.Discount,
+                    Price = x.Price,
+                    OfficialPrice = x.OfficialPrice,
+                    ImageBase64 = x.Image != null 
+                                ? $"data:{x.ImageType};Base64,{Convert.ToBase64String(x.Image)}" 
+                                : null,
+                }).ToListAsync();
+                var drinks = await _dbContext.OtherDishes.Where(x => x.DishesType == Enums.DishesType.DRINK).ToListAsync();
+                var appetizer = await _dbContext.OtherDishes.Where(x => x.DishesType == Enums.DishesType.APPETIZER).ToListAsync();
+
+                response.StatusCode = 200;
+                if (drinks.Count == 0)
+                {
+                    response.noDrink = true;
+                    response.Message = "There Is No Drink";
+                }
+                if (appetizer.Count == 0)
+                {
+                    response.noAppetizer = true;
+                    response.Message = "There Is No Appetizer";
+                }
+                if (otherDishes != null)
+                {
+                    response.otherDishes = otherDishes;
+                }
+                else
+                {
+                    response.Message = "Please Add Some Dishes";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> EditDishes(OtherDishesForm dishesForm, long dishesId)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var dish = await _dbContext.OtherDishes.FindAsync(dishesId);
+
+                if (dish != null)
+                {
+                    if (dishesForm.Image != null)
+                    {
+                        var ms = new MemoryStream();
+                        await dishesForm.Image.CopyToAsync(ms);
+                        var image = ms.ToArray();
+
+                        dish.Image = image;
+                        dish.ImageType = dishesForm.Image.ContentType;
+                    }
+                    dish.Name = dishesForm.Name;
+                    dish.Description = dishesForm.Description;
+                    dish.Discount = dishesForm.Discount;
+                    dish.Price = dishesForm.Price;
+
+                    int result = await _dbContext.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        response.StatusCode = 200;
+                        response.Message = dish.DishesType == Enums.DishesType.DRINK
+                            ? "Edit Dish Successfully"
+                            : "Edit Appetizer Successfully";
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        response.Message = "Edit Fail";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Dishes Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> GetSelectedDish(long dishesId)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var dish = await _dbContext.OtherDishes.FindAsync(dishesId);
+
+                if (dish != null)
+                {
+                    response.StatusCode = 200;
+                    response.dishesDTO = new OtherDishesDTO
+                    {
+                        Id = dish.Id,
+                        Name = dish.Name,
+                        DishesType = dish.DishesType,
+                        Description = dish.Description,
+                        Discount = dish.Discount,
+                        Price = dish.Price,
+                        OfficialPrice = dish.OfficialPrice,
+                        ImageBase64 = dish.Image != null
+                            ? $"data:{dish.ImageType};Base64,{Convert.ToBase64String(dish.Image)}"
+                            : null
+                    };
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Dish Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> DeleteDish(long dishesId)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var dish = await _dbContext.OtherDishes.FindAsync(dishesId);
+
+                if (dish != null)
+                {
+                    _dbContext.Remove(dish);
+                    int result = await _dbContext.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        response.StatusCode = 200;
+                        response.Message = dish.DishesType == Enums.DishesType.DRINK
+                            ? "Deleted Drink Successfully"
+                            : "Deleted Appetizer Successfully";
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        response.Message = "Delete Fail";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Dish Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
     }
 }

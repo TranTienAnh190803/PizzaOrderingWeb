@@ -15,5 +15,15 @@ namespace Backend.Service
         public Task<Response> UploadImage(IFormFile imageFile);
 
         public Task<Response> GetSelectedPizza(long pizzaId);
+
+        public Task<Response> AddOtherDishes(OtherDishesForm dishesForm);
+
+        public Task<Response> GetAllDishes();
+
+        public Task<Response> EditDishes(OtherDishesForm dishesForm, long dishesId);
+
+        public Task<Response> GetSelectedDish(long dishesId);
+
+        public Task<Response> DeleteDish(long dishesId);
     }
 }

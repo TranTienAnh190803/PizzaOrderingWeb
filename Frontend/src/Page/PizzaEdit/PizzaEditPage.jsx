@@ -7,6 +7,7 @@ import UserService from "../../Service/UserService";
 import DishesService from "../../Service/DishesService";
 
 export default function PizzaEditPage() {
+  document.title = "Pizza Editing";
   const navigate = useNavigate();
   const { pizzaId } = useParams();
   const [prices, setPrice] = useState([

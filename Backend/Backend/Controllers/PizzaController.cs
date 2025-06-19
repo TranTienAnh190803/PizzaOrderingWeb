@@ -27,6 +27,7 @@ namespace Backend.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+
         [AllowAnonymous]
         [HttpGet]
         [Route("get-pizza")]
@@ -35,6 +36,7 @@ namespace Backend.Controllers
             Response response = await _pizzaService.GetPizza();
             return StatusCode(response.StatusCode, response);
         }
+
 
         [Authorize(Roles = "ADMIN")]
         [HttpPatch]
@@ -46,6 +48,7 @@ namespace Backend.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+
         [Authorize(Roles = "ADMIN")]
         [HttpDelete]
         [Route("delete-pizza/{pizzaId}")]
@@ -54,6 +57,7 @@ namespace Backend.Controllers
             Response response = await _pizzaService.DeletePizza(pizzaId);
             return StatusCode(response.StatusCode, response);
         }
+
 
         [Authorize(Roles = "ADMIN")]
         [HttpPost]
@@ -71,12 +75,63 @@ namespace Backend.Controllers
             }
         }
 
+
         [Authorize]
         [HttpGet]
         [Route("get-selected-pizza/{pizzaId}")]
         public async Task<ActionResult<Response>> getSelectedPizza([FromRoute] long pizzaId)
         {
             Response response = await _pizzaService.GetSelectedPizza(pizzaId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPost]
+        [Route("add-other-dishes")]
+        public async Task<ActionResult<Response>> AddOtherDishes([FromForm] OtherDishesForm dishesForm)
+        {
+            Response response = await _pizzaService.AddOtherDishes(dishesForm);
+            return StatusCode(response.StatusCode, response);
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("get-all-dishes")]
+        public async Task<ActionResult<Response>> GetAllDishes()
+        {
+            Response response = await _pizzaService.GetAllDishes();
+            return StatusCode(response.StatusCode, response);
+        }
+
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPatch]
+        [Route("edit-dishes")]
+        public async Task<ActionResult<Response>> EditDishes([FromForm] OtherDishesForm dishesForm, long dishesId)
+        {
+            Response response = await _pizzaService.EditDishes(dishesForm, dishesId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("get-dish/{dishesId}")]
+        public async Task<ActionResult<Response>> GetSelectedDish([FromRoute] long dishesId)
+        {
+            Response response = await _pizzaService.GetSelectedDish(dishesId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete]
+        [Route("delete-dish/{dishesId}")]
+        public async Task<ActionResult<Response>> DeleteDish([FromRoute] long dishesId)
+        {
+            Response response = await _pizzaService.DeleteDish(dishesId);
             return StatusCode(response.StatusCode, response);
         }
     }

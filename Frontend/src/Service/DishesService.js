@@ -86,6 +86,30 @@ class DishesService {
             return error.response.data;
         }
     }
+
+    static async getAllDishes() {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-all-dishes`);
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async deleteDishes(token, dishesId) {
+        try {
+            const response = await axios.delete(`${this.BASE_URL}/delete-dish/${dishesId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
 }
 
 export default DishesService;

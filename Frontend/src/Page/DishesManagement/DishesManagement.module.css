@@ -1,5 +1,5 @@
 .wrapper{
-    margin-top: 82px;
+    margin-top: 80px;
     min-height: 100vh;
 }
 
@@ -26,6 +26,7 @@
     width: 85%;
     border-radius: 30px;
     padding: 20px;
+    overflow: auto;
 }
 
 .dishes-container .image-box{
