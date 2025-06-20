@@ -8,6 +8,7 @@ export default function LoginPage() {
   document.title = "Login";
   const navigate = useNavigate();
   const [loginForm, setLoginForm] = useState({});
+  const [logingin, setLogingin] = useState(false);
 
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -17,6 +18,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLogingin(true);
 
     const response = await UserService.login(loginForm);
     console.log(response);
@@ -28,6 +30,8 @@ export default function LoginPage() {
     } else {
       alert(response.message);
     }
+
+    setLogingin(false);
   };
 
   return (
@@ -68,7 +72,9 @@ export default function LoginPage() {
               <a href="#">Forgot password?</a>
             </div>
 
-            <button type="submit">Login</button>
+            <button type="submit" disabled={logingin}>
+              Login
+            </button>
 
             <hr />
 

@@ -191,10 +191,11 @@ export default function PizzaAddingPage() {
               })}
             </div>
             <h4 className="mt-5">
-              <b>- Image: </b>{" "}
+              <b className="me-2">- Image: </b>{" "}
               <input
                 type="file"
                 ref={imageRef}
+                accept="image/*"
                 name="image"
                 style={{ display: "none" }}
                 onChange={handleUploadImage}

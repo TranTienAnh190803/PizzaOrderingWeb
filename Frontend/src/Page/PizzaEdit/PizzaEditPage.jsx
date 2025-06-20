@@ -222,6 +222,7 @@ export default function PizzaEditPage() {
               <input
                 type="file"
                 ref={imageRef}
+                accept="image/*"
                 name="image"
                 style={{ display: "none" }}
                 onChange={handleUploadImage}

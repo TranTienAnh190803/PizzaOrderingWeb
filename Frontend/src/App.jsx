@@ -9,6 +9,8 @@ import PasswordChangingPage from "./Page/PasswordChanging/PasswordChangingPage";
 import DishesManagement from "./Page/DishesManagement/DishesManagement";
 import PizzaAddingPage from "./Page/PizzaAdding/PizzaAddingPage";
 import PizzaEditPage from "./Page/PizzaEdit/PizzaEditPage";
+import OtherDishesAddingPage from "./Page/OtherDishesAdding/OtherDishesAddingPage";
+import OtherDishesEditPage from "./Page/OtherDishesEdit/OtherDishesEditPage";
 
 function App() {
   return (
@@ -44,6 +46,14 @@ function App() {
                 <Route
                   path="/admin/pizza-edit/:pizzaId"
                   element={<PizzaEditPage />}
+                />
+                <Route
+                  path="/admin/dishes-adding/:dishesType"
+                  element={<OtherDishesAddingPage />}
+                />
+                <Route
+                  path="/admin/dishes-edit/:dishesId"
+                  element={<OtherDishesEditPage />}
                 />
               </>
             )}

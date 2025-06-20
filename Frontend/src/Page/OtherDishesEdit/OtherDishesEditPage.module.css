@@ -1,0 +1,26 @@
+.wrapper{
+    margin-top: 82px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.dish-form{
+    background-color: white;
+    width: 85%;
+    border-radius: 30px;
+    padding: 20px;
+    height: fit-content;
+}
+
+.input-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.image-box img{
+    width: 50%;
+    aspect-ratio: 1/1;
+    border: solid 1px black;
+    border-radius: 20px;
+}

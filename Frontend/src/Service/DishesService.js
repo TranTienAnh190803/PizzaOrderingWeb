@@ -110,6 +110,50 @@ class DishesService {
             return error.response.data;
         }
     }
+
+    static async addDishes(token, dishesForm) {
+        try {
+            const response = await axios.post(`${this.BASE_URL}/add-other-dishes`, dishesForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async getSelectedDish(token, dishesId) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-dish/${dishesId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async editDish(token, dishesForm, dishesId) {
+        try {
+            const response = await axios.patch(`${this.BASE_URL}/edit-dishes/${dishesId}`, dishesForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
 }
 
 export default DishesService;

@@ -108,15 +108,15 @@ namespace Backend.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpPatch]
-        [Route("edit-dishes")]
-        public async Task<ActionResult<Response>> EditDishes([FromForm] OtherDishesForm dishesForm, long dishesId)
+        [Route("edit-dishes/{dishesId}")]
+        public async Task<ActionResult<Response>> EditDishes([FromForm] OtherDishesForm dishesForm,[FromRoute] long dishesId)
         {
             Response response = await _pizzaService.EditDishes(dishesForm, dishesId);
             return StatusCode(response.StatusCode, response);
         }
 
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         [Route("get-dish/{dishesId}")]
         public async Task<ActionResult<Response>> GetSelectedDish([FromRoute] long dishesId)
