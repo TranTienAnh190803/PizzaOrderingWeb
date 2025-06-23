@@ -389,5 +389,84 @@ namespace Backend.Service.Implement
 
             return response;
         }
+
+        public async Task<Response> GetAllDeliveryMan()
+        {
+            Response response = new Response();
+
+            try
+            {
+                var deliveryManList = await _dbContext.Users.Where(x => x.Role == UserRole.DELIVERY).Select(x => new UserDTO
+                {
+                    userId = x.Id,
+                    Username = x.Username,
+                    Email = x.Email,
+                    PhoneNumber = x.PhoneNumber,
+                    Fullname = x.Fullname,
+                    Gender = x.Gender,
+                    Address = x.Address,
+                    DateOfBirth = x.DateOfBirth,
+                }).ToListAsync();
+
+                if (deliveryManList != null && deliveryManList.Count > 0)
+                {
+                    response.UserList = deliveryManList;
+                    response.StatusCode = 200;
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "There Is No Delivery Man";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> GetSelectedDeliveryMan(int userId)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var deliveryMan = await _dbContext.Users.Where(x => x.Id == userId && x.Role == UserRole.DELIVERY).FirstOrDefaultAsync();
+
+                if (deliveryMan != null)
+                {
+                    response.StatusCode = 200;
+                    response.userDTO = new UserDTO
+                    {
+                        userId = deliveryMan.Id,
+                        Username = deliveryMan.Username,
+                        Email = deliveryMan.Email,
+                        PhoneNumber = deliveryMan.PhoneNumber,
+                        Fullname = deliveryMan.Fullname,
+                        Gender = deliveryMan.Gender,
+                        Address = deliveryMan.Address,
+                        DateOfBirth = deliveryMan.DateOfBirth,
+                        AvatarBase64 = deliveryMan.Avatar != null 
+                                    ? $"data:{deliveryMan.AvatarType};Base64,{Convert.ToBase64String(deliveryMan.Avatar)}"
+                                    : null
+                    };
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "No Delivery Man Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
     }
 }

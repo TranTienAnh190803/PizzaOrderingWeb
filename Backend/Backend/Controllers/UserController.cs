@@ -118,5 +118,23 @@ namespace Backend.Controllers
             Response response = await _userService.ChangePassword(username, passwordChangingForm);
             return StatusCode(response.StatusCode, response);
         }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet]
+        [Route("get-all-delivery-man")]
+        public async Task<ActionResult<Response>> GetAllDeliveryMan()
+        {
+            Response response = await _userService.GetAllDeliveryMan();
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet]
+        [Route("get-selected-delivery-man/{userId}")]
+        public async Task<ActionResult<Response>> GetSelectedDeliveryMan([FromRoute] int userId)
+        {
+            Response response = await _userService.GetSelectedDeliveryMan(userId);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

@@ -84,7 +84,7 @@ export default function Navbar({ newAvatar }) {
                 </Link>
               </li>
               <li className="nav-item mx-2">
-                <Link className="nav-link" to="/">
+                <Link className="nav-link" to="/admin/dm-mangement">
                   Delivery Man
                 </Link>
               </li>

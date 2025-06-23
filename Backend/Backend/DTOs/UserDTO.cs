@@ -7,6 +7,9 @@ namespace Backend.DTOs
     public class UserDTO
     {
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public int? userId { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? Username { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -29,6 +32,9 @@ namespace Backend.DTOs
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public byte[]? Avatar { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? AvatarBase64 { get; set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string? AvatarType { get; set; }

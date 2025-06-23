@@ -11,6 +11,8 @@ import PizzaAddingPage from "./Page/PizzaAdding/PizzaAddingPage";
 import PizzaEditPage from "./Page/PizzaEdit/PizzaEditPage";
 import OtherDishesAddingPage from "./Page/OtherDishesAdding/OtherDishesAddingPage";
 import OtherDishesEditPage from "./Page/OtherDishesEdit/OtherDishesEditPage";
+import DMManagement from "./Page/DeliveryManManagement/DMManagement";
+import DMRegistration from "./Page/DeliveryManRegistration/DMRegistration";
 
 function App() {
   return (
@@ -55,6 +57,11 @@ function App() {
                   path="/admin/dishes-edit/:dishesId"
                   element={<OtherDishesEditPage />}
                 />
+                <Route
+                  path="/admin/dm-registration"
+                  element={<DMRegistration />}
+                />
+                <Route path="/admin/dm-mangement" element={<DMManagement />} />
               </>
             )}
           </Routes>

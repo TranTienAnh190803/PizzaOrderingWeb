@@ -1,0 +1,21 @@
+.wrapper{
+    margin-top: 150px;
+    min-height: 100vh;
+}
+
+.dm-registration{
+    padding: 20px;
+    width: 85%;
+    background-color: white;
+    border-radius: 30px;
+}
+
+.input-container .input-box{
+    display: flex;
+    gap: 10%;
+    margin-bottom: 50px;
+}
+
+.input-container .input-box .input-group{
+    flex-basis: 100%;
+}

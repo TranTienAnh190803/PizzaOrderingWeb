@@ -86,9 +86,9 @@ class UserService {
         }
     }
 
-    static async deleteAccount(token) {
+    static async deleteAccount(token, userId) {
         try {
-            const response = await axios.delete(`${this.BASE_URL}/delete-account`, {
+            const response = await axios.delete(`${this.BASE_URL}/delete-account/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -103,6 +103,48 @@ class UserService {
     static async changePassword(token, passwordForm) {
         try {
             const response = await axios.patch(`${this.BASE_URL}/change-password`, passwordForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async registerDeliveryMan(token, registrationForm) {
+        try {
+            const response = await axios.post(`${this.BASE_URL}/register-delivery-man`, registrationForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async getAllDeliveryMan(token) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-all-delivery-man`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async getSelectedDeliveryMan(token, userId) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-selected-delivery-man/${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

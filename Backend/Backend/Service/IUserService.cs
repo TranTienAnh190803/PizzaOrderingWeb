@@ -21,5 +21,9 @@ namespace Backend.Service
         public Task<Response> DeleteAccount(int id);
 
         public Task<Response> ChangePassword(string? username, PasswordChangingForm passwordChangingForm);
+        
+        public Task<Response> GetAllDeliveryMan();
+
+        public Task<Response> GetSelectedDeliveryMan(int userId);
     }
 }
