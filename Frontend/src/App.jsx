@@ -13,6 +13,7 @@ import OtherDishesAddingPage from "./Page/OtherDishesAdding/OtherDishesAddingPag
 import OtherDishesEditPage from "./Page/OtherDishesEdit/OtherDishesEditPage";
 import DMManagement from "./Page/DeliveryManManagement/DMManagement";
 import DMRegistration from "./Page/DeliveryManRegistration/DMRegistration";
+import DMProfile from "./Page/DeliveryManProfile/DMProfile";
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
                   path="/admin/dm-registration"
                   element={<DMRegistration />}
                 />
+                <Route path="/admin/dm-info/:dmId" element={<DMProfile />} />
                 <Route path="/admin/dm-mangement" element={<DMManagement />} />
               </>
             )}

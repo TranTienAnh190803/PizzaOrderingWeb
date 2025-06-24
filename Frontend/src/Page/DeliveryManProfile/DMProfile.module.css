@@ -1,0 +1,20 @@
+.wrapper{
+    margin-top: 150px;
+    min-height: 100vh;
+}
+
+.dm{
+    padding: 20px;
+    width: 85%;
+    background-color: white;
+    border-radius: 30px;
+}
+
+.dm-info{
+    display: flex;
+    justify-content: space-around;
+}
+
+.dm-info .input-group{
+    width: 50%;
+}

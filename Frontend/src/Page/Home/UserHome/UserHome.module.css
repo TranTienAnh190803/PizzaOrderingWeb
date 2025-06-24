@@ -1,0 +1,71 @@
+.navbar2{
+    background-color: darkred;
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+.navbar2 .item{
+    text-align: center;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+.navbar2 .item:hover{
+    transform: scale(1.2);
+}
+
+.card-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.card-container .card{
+    display: flex;
+    background-color: white;
+    border-radius: 20px;
+    overflow: hidden;
+    width: 45%;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.5s ease;
+}
+
+.card-container .card:hover{
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card .img-container {
+    width: 35%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.card-container .card:hover .img-container img{
+    transform: scale(1.2);
+}
+
+.card .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.card .dishes-info{
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+@media only screen and (max-width: 1016px) {
+    .card-container .card{
+        width: 100%;
+    }
+}

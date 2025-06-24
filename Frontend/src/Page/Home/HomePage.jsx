@@ -1,3 +1,4 @@
+import Footer from "../../Component/Footer";
 import Navbar from "../../Component/Navbar";
 import UserHome from "./UserHome/UserHome";
 
@@ -9,6 +10,7 @@ export default function HomePage() {
       <div>
         <UserHome />
       </div>
+      <Footer />
     </>
   );
 }
