@@ -29,8 +29,7 @@ export default function PizzaEditPage() {
 
   const fetchSelectedPizza = async () => {
     if (UserService.isAuthenticated()) {
-      const token = localStorage.getItem("token");
-      const response = await DishesService.getSelectedPizza(token, pizzaId);
+      const response = await DishesService.getSelectedPizza(pizzaId);
       if (response.statusCode === 200) {
         const pizza = response.pizzaDTO;
         setSelectedPizza(pizza);

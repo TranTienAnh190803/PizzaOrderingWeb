@@ -1,9 +1,13 @@
+/* Food Navbar */
 .navbar2{
     background-color: darkred;
     color: white;
     display: flex;
     justify-content: space-evenly;
     padding: 20px;
+    position: sticky;
+    top: 5rem;
+    z-index: 1000;
 }
 
 .navbar2 .item{
@@ -16,6 +20,7 @@
     transform: scale(1.2);
 }
 
+/* Food Card */
 .card-container{
     display: flex;
     flex-wrap: wrap;
@@ -64,7 +69,77 @@
     justify-content: space-between;
 }
 
-@media only screen and (max-width: 1016px) {
+/* Popup */
+.popup-container{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-container .popup{
+    background-color: white;
+    width: 75%;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+}
+
+.popup .popup-close{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: none;
+    background-color: red;
+    color: white;
+    padding: 10px;
+}
+
+.popup-container .popup .popup-image{
+    width: 50%;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.popup-container .popup .popup-image img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.popup-container .popup .popup-info{
+    width: 50%;
+    padding: 35px;
+    border-left: solid 1px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.popup-container .popup .popup-info .size-list{
+    display: flex;
+}
+
+.popup-container .popup .popup-info input[type="number"]::-webkit-outer-spin-button,
+.popup-container .popup .popup-info input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.popup-container .popup .popup-info input[type="number"]{
+    width: 20%;
+}
+
+/* Responsive */
+@media only screen and (max-width: 1200px) {
     .card-container .card{
         width: 100%;
     }

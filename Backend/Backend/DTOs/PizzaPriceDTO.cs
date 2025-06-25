@@ -12,6 +12,8 @@ namespace Backend.DTOs
 
         public PizzaSize PizzaSize { get; set; }
 
+        public string? SizeString { get; set; }
+
         [Precision(18, 2)]
         public decimal Price { get; set; }
 

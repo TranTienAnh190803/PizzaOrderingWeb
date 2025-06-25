@@ -16,8 +16,7 @@ export default function OtherDishesEditPage() {
 
   const fetchSelectedDish = async () => {
     if (UserService.isAuthenticated()) {
-      const token = localStorage.getItem("token");
-      const response = await DishesService.getSelectedDish(token, dishesId);
+      const response = await DishesService.getSelectedDish(dishesId);
 
       if (response.statusCode === 200) {
         setDishesForm(response.dishesDTO);

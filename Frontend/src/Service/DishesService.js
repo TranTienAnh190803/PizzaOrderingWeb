@@ -73,13 +73,9 @@ class DishesService {
         }
     }
 
-    static async getSelectedPizza(token, pizzaId) {
+    static async getSelectedPizza(pizzaId) {
         try {
-            const response = await axios.get(`${this.BASE_URL}/get-selected-pizza/${pizzaId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await axios.get(`${this.BASE_URL}/get-selected-pizza/${pizzaId}`);
 
             return response.data;
         } catch (error) {
@@ -126,13 +122,9 @@ class DishesService {
         }
     }
 
-    static async getSelectedDish(token, dishesId) {
+    static async getSelectedDish(dishesId) {
         try {
-            const response = await axios.get(`${this.BASE_URL}/get-dish/${dishesId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+            const response = await axios.get(`${this.BASE_URL}/get-dish/${dishesId}`);
 
             return response.data;
         } catch (error) {

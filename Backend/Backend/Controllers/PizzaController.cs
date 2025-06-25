@@ -76,7 +76,7 @@ namespace Backend.Controllers
         }
 
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         [Route("get-selected-pizza/{pizzaId}")]
         public async Task<ActionResult<Response>> getSelectedPizza([FromRoute] long pizzaId)
@@ -117,7 +117,7 @@ namespace Backend.Controllers
 
 
         [Authorize]
-        [HttpGet]
+        [AllowAnonymous]
         [Route("get-dish/{dishesId}")]
         public async Task<ActionResult<Response>> GetSelectedDish([FromRoute] long dishesId)
         {

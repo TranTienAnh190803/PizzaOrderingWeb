@@ -244,6 +244,7 @@ namespace Backend.Service.Implement
                     {
                         PizzaId = x.PizzaId,
                         PizzaSize = x.PizzaSize,
+                        SizeString = x.PizzaSize.ToString(),
                         Price = x.Price,
                         OfficialPrice = x.OfficialPrice,
                     }).ToListAsync();
