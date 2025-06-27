@@ -28,9 +28,9 @@ namespace Backend.Data
                 .IsRequired(true);
 
             modelBuilder.Entity<CartItems>()
-                .HasOne(c => c.Pizza)
+                .HasOne(c => c.PizzaPrice)
                 .WithMany()
-                .HasForeignKey(c => c.PizzaId)
+                .HasForeignKey(c => new {c.PizzaId, c.SelectedSize})
                 .IsRequired(false);
 
             modelBuilder.Entity<CartItems>()

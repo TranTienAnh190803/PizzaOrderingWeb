@@ -36,5 +36,11 @@ namespace Backend.DTOs
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public bool? noAppetizer { get; set; } = null;
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public CartDTO? cartItem {  get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public List<CartDTO>? cart { get; set; }
     }
 }

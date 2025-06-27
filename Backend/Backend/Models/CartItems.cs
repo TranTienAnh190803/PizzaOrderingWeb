@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Backend.Enums;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,7 +17,9 @@ namespace Backend.Models
 
         public long? PizzaId { get; set; }
 
-        public Pizza? Pizza { get; set; }
+        public PizzaSize? SelectedSize { get; set; }
+
+        public PizzaPrice? PizzaPrice { get; set; }
 
         public long? DishesId { get; set; }
 
