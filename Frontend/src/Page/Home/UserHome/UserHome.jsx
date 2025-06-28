@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import DishesService from "../../../Service/DishesService";
 import Converter from "../../../Service/Converter";
 import { IoClose } from "react-icons/io5";
+import UserService from "../../../Service/UserService";
+import OrderService from "../../../Service/OrderService";
 
 export default function UserHome() {
   const [selection, setSelection] = useState({
@@ -27,12 +29,19 @@ export default function UserHome() {
     appetizer: false,
     message: "",
   });
+
+  // Popup Hook
   const [popup, setPopup] = useState({
     show: false,
     pizza: false,
     otherDishes: false,
   });
   const [selectedDish, setSelectedDish] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [cartItem, setCartItem] = useState({
+    quantity: 1,
+  });
+  const [allowAdd, setAllowAdd] = useState(false);
 
   const fetchPizzaList = async () => {
     const response = await DishesService.getPizza();
@@ -77,6 +86,7 @@ export default function UserHome() {
       const response = await DishesService.getSelectedPizza(id);
       if (response.statusCode === 200) {
         setSelectedDish(response.pizzaDTO);
+        setCartItem({ ...cartItem, pizzaId: response.pizzaDTO.id });
       } else {
         alert(response.message);
       }
@@ -84,6 +94,8 @@ export default function UserHome() {
       const response = await DishesService.getSelectedDish(id);
       if (response.statusCode === 200) {
         setSelectedDish(response.dishesDTO);
+        setTotalPrice(response.dishesDTO.officialPrice);
+        setCartItem({ ...cartItem, dishesId: response.dishesDTO.id });
       } else {
         alert(response.message);
       }
@@ -92,6 +104,7 @@ export default function UserHome() {
     }
   };
 
+  // Popup handler
   const handleClosePopup = (e) => {
     setSelectedDish({});
     setPopup({
@@ -99,6 +112,47 @@ export default function UserHome() {
       pizza: false,
       otherDishes: false,
     });
+    setTotalPrice(0);
+    setCartItem({
+      quantity: 1,
+    });
+    setAllowAdd(false);
+  };
+
+  const handleSizeChosing = (e) => {
+    const pizzaSize = e.currentTarget.id;
+    const selectedPrice = selectedDish.prices.find(
+      (value) => value.pizzaSize == pizzaSize
+    );
+    setTotalPrice(selectedPrice.officialPrice * cartItem.quantity);
+    setCartItem({ ...cartItem, selectedSize: parseInt(pizzaSize) });
+    setAllowAdd(true);
+  };
+
+  const handleSub = () => {
+    const newQuantity = cartItem.quantity - 1;
+
+    const officialPrice = totalPrice / cartItem.quantity;
+    const currentPrice = officialPrice * newQuantity;
+    setTotalPrice(currentPrice);
+    setCartItem({ ...cartItem, quantity: newQuantity });
+  };
+
+  const handlePlus = () => {
+    const newQuantity = cartItem.quantity + 1;
+
+    const officialPrice = totalPrice / cartItem.quantity;
+    const currentPrice = officialPrice * newQuantity;
+    setTotalPrice(currentPrice);
+    setCartItem({ ...cartItem, quantity: newQuantity });
+  };
+
+  const handleAddToCart = async () => {
+    if (UserService.isUser()) {
+      const token = localStorage.getItem("token");
+      const response = await OrderService.addToCart(token, cartItem);
+      alert(response.message);
+    }
   };
 
   return (
@@ -192,6 +246,11 @@ export default function UserHome() {
                         handleCardClick(event, value.id);
                       }}
                     >
+                      {value.discount > 0 && (
+                        <div className={style["discount"]}>
+                          <b>- {value.discount}%</b>
+                        </div>
+                      )}
                       <div className={style["img-container"]}>
                         <img src={value.imageBase64} alt="pizza" />
                       </div>
@@ -345,16 +404,17 @@ export default function UserHome() {
                     <p>
                       <b>Size:</b>
                     </p>
-                    <ul class="list-group">
+                    <ul className="list-group">
                       {selectedDish.prices?.map((price, index) => {
                         return (
-                          <li class="list-group-item" key={index}>
-                            <label class="form-check-label">
+                          <li className="list-group-item" key={index}>
+                            <label className="form-check-label">
                               <input
-                                class="form-check-input me-3"
+                                className="form-check-input me-3"
                                 type="radio"
                                 name="listGroupRadio"
-                                id={price.pizzeSize}
+                                id={price.pizzaSize}
+                                onChange={handleSizeChosing}
                               />
 
                               {price.sizeString}
@@ -365,19 +425,24 @@ export default function UserHome() {
                     </ul>
                   </div>
 
-                  <div>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <b>Quantity: </b>
                     <div className="d-inline-flex ms-3">
-                      <button className="btn btn-danger">
+                      <button
+                        className="btn btn-danger"
+                        disabled={cartItem.quantity === 1}
+                        onClick={handleSub}
+                      >
                         <b>-</b>
                       </button>
                       <input
                         type="number"
                         name="quantity"
                         className="form-control border-secondary text-center mx-1"
+                        value={cartItem.quantity}
                         readOnly
                       />
-                      <button className="btn btn-success">
+                      <button className="btn btn-success" onClick={handlePlus}>
                         <b>+</b>
                       </button>
                     </div>
@@ -385,11 +450,84 @@ export default function UserHome() {
 
                   <div className="d-flex justify-content-between align-items-center text-danger">
                     <div>
-                      <h4>
-                        <b className="me-3">Total:</b> VNĐ
+                      <h4 className="m-0">
+                        <b className="me-1">Total:</b>{" "}
+                        {Converter.toVND(totalPrice)} đ
                       </h4>
                     </div>
-                    <button className="btn btn-lg btn-outline-success">
+                    <button
+                      className="btn btn-lg btn-outline-success"
+                      disabled={!allowAdd}
+                      onClick={handleAddToCart}
+                    >
+                      Add To Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {popup.otherDishes && (
+            <div
+              className={style["popup-container"]}
+              onClick={handleClosePopup}
+            >
+              <div
+                className={style["popup"]}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  className={style["popup-close"]}
+                  onClick={handleClosePopup}
+                >
+                  <IoClose className="fs-3" />
+                </button>
+                <div className={style["popup-image"]}>
+                  <img src={selectedDish.imageBase64} alt="pizza" />
+                </div>
+                <div className={style["popup-info"]}>
+                  <div>
+                    <h3>
+                      <b>{selectedDish.name}</b>
+                    </h3>
+                    <p>{selectedDish.description}</p>
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <b>Quantity: </b>
+                    <div className="d-inline-flex ms-3">
+                      <button
+                        className="btn btn-danger"
+                        disabled={cartItem.quantity === 1}
+                        onClick={handleSub}
+                      >
+                        <b>-</b>
+                      </button>
+                      <input
+                        type="number"
+                        name="quantity"
+                        className="form-control border-secondary text-center mx-1"
+                        value={cartItem.quantity}
+                        readOnly
+                      />
+                      <button className="btn btn-success" onClick={handlePlus}>
+                        <b>+</b>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-between align-items-center text-danger">
+                    <div>
+                      <h4 className="m-0">
+                        <b className="me-1">Total:</b>{" "}
+                        {Converter.toVND(totalPrice)} đ
+                      </h4>
+                    </div>
+                    <button
+                      className="btn btn-lg btn-outline-success"
+                      onClick={handleAddToCart}
+                    >
                       Add To Cart
                     </button>
                   </div>

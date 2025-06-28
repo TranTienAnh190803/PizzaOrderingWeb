@@ -14,6 +14,7 @@ import OtherDishesEditPage from "./Page/OtherDishesEdit/OtherDishesEditPage";
 import DMManagement from "./Page/DeliveryManManagement/DMManagement";
 import DMRegistration from "./Page/DeliveryManRegistration/DMRegistration";
 import DMProfile from "./Page/DeliveryManProfile/DMProfile";
+import CartPage from "./Page/Cart/CartPage";
 
 function App() {
   return (
@@ -64,6 +65,12 @@ function App() {
                 />
                 <Route path="/admin/dm-info/:dmId" element={<DMProfile />} />
                 <Route path="/admin/dm-mangement" element={<DMManagement />} />
+              </>
+            )}
+
+            {UserService.isUser() && (
+              <>
+                <Route path="/user/cart" element={<CartPage />} />
               </>
             )}
           </Routes>

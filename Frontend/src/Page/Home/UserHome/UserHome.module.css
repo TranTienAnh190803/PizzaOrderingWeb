@@ -36,10 +36,20 @@
     border: solid 1px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: box-shadow 0.5s ease;
+    position: relative;
 }
 
 .card-container .card:hover{
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card .discount{
+    position: absolute;
+    color: white;
+    background-color: red;
+    top: 0;
+    right: 0;
+    padding: 4px 8px;
 }
 
 .card .img-container {
@@ -86,6 +96,7 @@
 .popup-container .popup{
     background-color: white;
     width: 75%;
+    height: 75vh;
     border-radius: 30px;
     overflow: hidden;
     position: relative;
@@ -100,6 +111,11 @@
     background-color: red;
     color: white;
     padding: 10px;
+}
+
+.popup .popup-close:hover{
+    background-color: gray;
+    color: black;
 }
 
 .popup-container .popup .popup-image{
@@ -117,7 +133,7 @@
 
 .popup-container .popup .popup-info{
     width: 50%;
-    padding: 35px;
+    padding: 35px 45px 35px 35px;
     border-left: solid 1px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;

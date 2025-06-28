@@ -188,13 +188,12 @@ export default function Navbar({ newAvatar }) {
             </div>
 
             {UserService.isUser() && (
-              <Link className="btn btn-lg btn-outline-danger" to="/cart">
+              <Link className="btn btn-lg btn-outline-danger" to="/user/cart">
                 <FaShoppingCart />
               </Link>
             )}
           </div>
         ) : (
-          // Guest User: Login & Cart (redirects to login)
           <div className="d-flex align-items-center gap-2 me-5">
             <Link className="btn btn-lg btn-outline-primary" to="/login">
               <FaUser />
