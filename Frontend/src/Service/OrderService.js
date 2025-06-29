@@ -44,6 +44,34 @@ class OrderService{
             return error.response.data;
         }
     }
+
+    static async getNumberOfItem(token) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/get-number-of-item`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async orderFood(token, orderForm) {
+        try {
+            const response = await axios.post(`${this.BASE_URL}/order-food`, orderForm, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
 }
 
 export default OrderService;

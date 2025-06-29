@@ -4,6 +4,7 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250629142821_SeventhMigration")]
+    partial class SeventhMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +39,17 @@ namespace Backend.Migrations
                     b.Property<long?>("OrderId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("OtherDishesId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("PizzaId")
                         .HasColumnType("bigint");
+
+                    b.Property<long?>("PizzaPricePizzaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("PizzaPricePizzaSize")
+                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -54,13 +66,13 @@ namespace Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DishesId");
-
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("OtherDishesId");
 
                     b.HasIndex("UserId");
 
-                    b.HasIndex("PizzaId", "SelectedSize");
+                    b.HasIndex("PizzaPricePizzaId", "PizzaPricePizzaSize");
 
                     b.ToTable("CartItems");
                 });
@@ -248,13 +260,13 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.CartItems", b =>
                 {
-                    b.HasOne("Backend.Models.OtherDishes", "OtherDishes")
-                        .WithMany()
-                        .HasForeignKey("DishesId");
-
                     b.HasOne("Backend.Models.Order", "Order")
                         .WithMany("CartItems")
                         .HasForeignKey("OrderId");
+
+                    b.HasOne("Backend.Models.OtherDishes", "OtherDishes")
+                        .WithMany()
+                        .HasForeignKey("OtherDishesId");
 
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany()
@@ -264,7 +276,7 @@ namespace Backend.Migrations
 
                     b.HasOne("Backend.Models.PizzaPrice", "PizzaPrice")
                         .WithMany()
-                        .HasForeignKey("PizzaId", "SelectedSize");
+                        .HasForeignKey("PizzaPricePizzaId", "PizzaPricePizzaSize");
 
                     b.Navigation("Order");
 

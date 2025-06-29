@@ -5,6 +5,7 @@ import style from "./CartPage.module.css";
 import UserService from "../../Service/UserService";
 import OrderService from "../../Service/OrderService";
 import Converter from "../../Service/Converter";
+import { IoClose } from "react-icons/io5";
 
 export default function CartPage() {
   document.title = "Cart";
@@ -13,6 +14,8 @@ export default function CartPage() {
     check: false,
     message: "",
   });
+  const [remove, setRemove] = useState(false);
+  const [popup, setPopup] = useState(false);
 
   const fetchUserCart = async () => {
     if (UserService.isUser()) {
@@ -40,15 +43,20 @@ export default function CartPage() {
 
       if (response.statusCode === 200) {
         fetchUserCart();
+        setRemove(!remove);
       } else {
         alert(response.message);
       }
     }
   };
 
+  const handleClosePopup = () => {
+    setPopup(false);
+  };
+
   return (
     <>
-      <Navbar />
+      <Navbar updateCart={remove} />
       <div className={style["wrapper"]}>
         <div className={`${style["cart"]} mx-auto`}>
           <h1 className="text-center p-3">
@@ -57,7 +65,7 @@ export default function CartPage() {
           <hr />
           <div className="mt-5">
             {noItem.check ? (
-              <div className="text-center">
+              <div className="text-center mb-5">
                 <h3 className="text-danger">{noItem.message}</h3>
               </div>
             ) : (
@@ -107,13 +115,73 @@ export default function CartPage() {
                     )}{" "}
                     đ
                   </h3>
-                  <button className={style["custom-btn"]}>Order</button>
+                  <button
+                    className={style["custom-btn"]}
+                    onClick={() => {
+                      setPopup(true);
+                    }}
+                  >
+                    Order
+                  </button>
                 </div>
               </>
             )}
           </div>
         </div>
       </div>
+
+      {popup && (
+        <div className={style["popup"]} onClick={handleClosePopup}>
+          <div
+            className={style["information"]}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <button className={style["popup-close"]} onClick={handleClosePopup}>
+              <IoClose className="fs-3" />
+            </button>
+            <h2 className="p-3 text-center">
+              <b>Information</b>
+            </h2>
+            <hr />
+            <div className="p-3">
+              <div className="mb-4">
+                <p>
+                  <b>Orderer: </b>
+                </p>
+                <input
+                  type="text"
+                  name="orderer"
+                  className="form-control border-secondary"
+                />
+              </div>
+              <div className="mb-4">
+                <p>
+                  <b>Address: </b>
+                </p>
+                <input
+                  type="text"
+                  name="address"
+                  className="form-control border-secondary"
+                />
+              </div>
+              <div className="mb-4">
+                <p>
+                  <b>Phone Number: </b>
+                </p>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  className="form-control border-secondary"
+                />
+              </div>
+
+              <button className={style["popup-btn"]}>Order</button>
+            </div>
+          </div>
+        </div>
+      )}
       <Footer />
     </>
   );

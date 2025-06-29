@@ -144,17 +144,22 @@ namespace Backend.Service.Implement
                         ImageBase64 = x.PizzaPrice != null
                             ? $"data:{x.PizzaPrice.Pizza!.ImageType};base64,{Convert.ToBase64String(x.PizzaPrice.Pizza.Image!)}"
                             : $"data:{x.OtherDishes!.ImageType};base64,{Convert.ToBase64String(x.OtherDishes.Image!)}",
+                        OrderId = x.OrderId
                     }).ToListAsync();
 
-                    if (cart != null)
+                    response.cart = new List<CartDTO>();
+                    foreach(var item in cart)
                     {
-                        response.StatusCode = 200;
-                        response.cart = cart;
+                        if (item.OrderId == null)
+                        {
+                            response.cart.Add(item);
+                        }
                     }
-                    else
+
+                    response.StatusCode = 200;
+                    if (response.cart.Count == 0)
                     {
-                        response.StatusCode = 200;
-                        response.Message = "There Is No Item In Your Cart";
+                        response.Message = "There Is No Item In Your Cart.";
                     }
                 }
                 else
@@ -210,6 +215,82 @@ namespace Backend.Service.Implement
                 {
                     response.StatusCode = 404;
                     response.Message = "User Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> OrderFood(string? username, OrderForm orderForm)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username == username);
+
+                if (user != null)
+                {
+                    var cart = await _dbContext.CartItems.Where(x => x.UserId == user.Id).ToListAsync();
+
+                    Order order = new Order
+                    {
+                        Orderer = orderForm.Orderer,
+                        Address = orderForm.Address,
+                        PhoneNumber = orderForm.PhoneNumber,
+                        OrderState = Enums.OrderState.Pending,
+                        CartItems = cart,
+                        TotalPrice = cart.Sum(x => x.TotalPrice),
+                    };
+
+                    _dbContext.Orders.Add(order);
+                    int result = await _dbContext.SaveChangesAsync();
+
+                    if (result > 0)
+                    {
+                        response.StatusCode = 200;
+                        response.Message = "Thank You For Choosing To Buy Our Food. You Order Is Now Pending";
+                    }
+                    else
+                    {
+                        response.StatusCode = 400;
+                        response.Message = "Order Failed";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Login To Order";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> GetNumberOfItem(string? username)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username == username);
+                
+                if (user != null)
+                {
+                    int itemNumber = await _dbContext.CartItems.CountAsync(x => x.UserId == user.Id && x.OrderId == null);
+
+                    response.StatusCode = 200;
+                    response.numberOfItem = itemNumber;
                 }
             }
             catch (Exception ex)

@@ -13,7 +13,8 @@ namespace Backend.Models
 
         public int UserId { get; set; }
 
-        public User User { get; set; }
+        [Required]
+        public required User User { get; set; }
 
         public long? PizzaId { get; set; }
 
@@ -25,9 +26,14 @@ namespace Backend.Models
 
         public OtherDishes? OtherDishes { get; set; }
 
+        [Required]
         public int Quantity { get; set; }
 
         [Precision(18, 2)]
         public decimal TotalPrice { get; set; }
+
+        public Order? Order { get; set; }
+
+        public long? OrderId { get; set; }
     }
 }

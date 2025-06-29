@@ -9,5 +9,9 @@ namespace Backend.Service
         public Task<Response> GetCart(string? username);
 
         public Task<Response> DeleteCartItem(string? username, long itemId);
+
+        public Task<Response> OrderFood(string? username, OrderForm orderForm);
+        
+        public Task<Response> GetNumberOfItem(string? username);
     }
 }

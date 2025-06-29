@@ -11,11 +11,13 @@ import {
 } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import defaultAvatar from "../assets/DefaultAvatar.jpg";
+import OrderService from "../Service/OrderService";
 
-export default function Navbar({ newAvatar }) {
+export default function Navbar({ newAvatar, updateCart }) {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const [userAvatar, setUserAvatar] = useState(null);
+  const [itemNumber, setItemNumber] = useState(0);
 
   const handleLogout = () => {
     UserService.logout();
@@ -44,14 +46,30 @@ export default function Navbar({ newAvatar }) {
     }
   };
 
+  const fetchNumberOfItem = async () => {
+    if (UserService.isUser()) {
+      const token = localStorage.getItem("token");
+      const response = await OrderService.getNumberOfItem(token);
+
+      if (response.statusCode === 200) {
+        setItemNumber(response.numberOfItem);
+      }
+    }
+  };
+
   useEffect(() => {
     fetchUserInfo();
     fetchAvatar();
+    fetchNumberOfItem();
   }, []);
 
   useEffect(() => {
     fetchAvatar();
   }, [newAvatar]);
+
+  useEffect(() => {
+    fetchNumberOfItem();
+  }, [updateCart]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top py-3 fs-6">
@@ -189,7 +207,7 @@ export default function Navbar({ newAvatar }) {
 
             {UserService.isUser() && (
               <Link className="btn btn-lg btn-outline-danger" to="/user/cart">
-                <FaShoppingCart />
+                <FaShoppingCart /> <span className="fs-6">{itemNumber}</span>
               </Link>
             )}
           </div>

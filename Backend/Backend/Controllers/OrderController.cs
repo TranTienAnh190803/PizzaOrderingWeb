@@ -47,5 +47,25 @@ namespace Backend.Controllers
             Response response = await _orderService.DeleteCartItem(username, itemId);
             return StatusCode(response.StatusCode, response);
         }
+
+        [Authorize(Roles = "USER")]
+        [HttpPost]
+        [Route("order-food")]
+        public async Task<ActionResult<Response>> OrderFood([FromBody] OrderForm orderForm)
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.OrderFood(username, orderForm);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "USER")]
+        [HttpGet]
+        [Route("get-number-of-item")]
+        public async Task<ActionResult<Response>> GetNumberOfItem()
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.GetNumberOfItem(username);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

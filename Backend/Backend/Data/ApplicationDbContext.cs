@@ -30,7 +30,7 @@ namespace Backend.Data
             modelBuilder.Entity<CartItems>()
                 .HasOne(c => c.PizzaPrice)
                 .WithMany()
-                .HasForeignKey(c => new {c.PizzaId, c.SelectedSize})
+                .HasForeignKey(c => new { c.PizzaId, c.SelectedSize })
                 .IsRequired(false);
 
             modelBuilder.Entity<CartItems>()
@@ -49,5 +49,7 @@ namespace Backend.Data
         public required DbSet<OtherDishes> OtherDishes { get; set; }
 
         public required DbSet<CartItems> CartItems { get; set; }
+
+        public required DbSet<Order> Orders { get; set; }
     }
 }
