@@ -20,6 +20,11 @@ namespace Backend.Models
         [Required]
         public required string PhoneNumber { get; set; }
 
+        [Required]
+        public required DateTime OrderDate { get; set; }
+
+        public DateTime? DeliveredDate { get; set; }
+
         public OrderState OrderState { get; set; }
 
         public required ICollection<CartItems> CartItems { get; set; }
@@ -27,6 +32,14 @@ namespace Backend.Models
         [Precision(18, 2)]
         public decimal TotalPrice { get; set; }
 
+        [Required]
+        [ForeignKey("UserId")]
+        public required User User { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
+        [ForeignKey("DeliveryManId")]
         public User? DeliveryMan { get; set; }
 
         public int? DeliveryManId { get; set; }

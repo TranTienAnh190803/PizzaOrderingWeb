@@ -35,6 +35,7 @@ namespace Backend.DTOs
         [Precision(18, 2)]
         public decimal TotalPrice { get; set; } = 0;
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public long? OrderId { get; set; }
     }
 }

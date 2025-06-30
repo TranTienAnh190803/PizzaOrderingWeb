@@ -67,5 +67,54 @@ namespace Backend.Controllers
             Response response = await _orderService.GetNumberOfItem(username);
             return StatusCode(response.StatusCode, response);
         }
+
+        [Authorize(Roles = "USER")]
+        [HttpGet]
+        [Route("get-user-orders")]
+        public async Task<ActionResult<Response>> GetUserOrders()
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.GetUserOrders(username);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "USER")]
+        [HttpGet]
+        [Route("get-selected-order/{orderId}")]
+        public async Task<ActionResult<Response>> GetSelectedOrdered([FromRoute] long orderId)
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.GetSelectedOrdered(username, orderId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpPatch]
+        [Route("accept-order/{orderId}")]
+        public async Task<ActionResult<Response>> AcceptOrder([FromRoute] long orderId, [FromQuery] int deliveryManId)
+        {
+            Response response = await _orderService.AcceptOrder(orderId, deliveryManId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "USER")]
+        [HttpPatch]
+        [Route("cancel-order/{orderId}")]
+        public async Task<ActionResult<Response>> CancelOrder([FromRoute] long orderId)
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.CancelOrder(username, orderId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "DELIVERY")]
+        [HttpPatch]
+        [Route("delivery-verifying/{orderId}")]
+        public async Task<ActionResult<Response>> DeliveryVerifying([FromRoute] long orderId)
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.DeliveryVerifying(username, orderId);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
