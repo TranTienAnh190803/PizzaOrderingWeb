@@ -329,6 +329,7 @@ namespace Backend.Service.Implement
                         Address = x.Address,
                         PhoneNumber = x.PhoneNumber,
                         OrderState = x.OrderState,
+                        stateString = x.OrderState.ToString(),
                         CartItems = x.CartItems.Select(y => new CartDTO
                         {
                             Name = y.PizzaPrice != null
@@ -350,7 +351,8 @@ namespace Backend.Service.Implement
                     }
                     else
                     {
-                        response.StatusCode = 404;
+                        response.StatusCode = 200;
+                        response.Orders = userOrders;
                         response.Message = "You Haven't Ordered Anything";
                     }
                 }
@@ -398,6 +400,7 @@ namespace Backend.Service.Implement
                             OrderDate = selectedOrdered.OrderDate,
                             DeliveredDate = selectedOrdered.DeliveredDate,
                             OrderState = selectedOrdered.OrderState,
+                            stateString = selectedOrdered.OrderState.ToString(),
                             TotalPrice = selectedOrdered.TotalPrice,
                             DeliveryManId = selectedOrdered.DeliveryManId,
                             CartItems = selectedOrdered.CartItems.Select(x => new CartDTO
@@ -584,6 +587,232 @@ namespace Backend.Service.Implement
                 {
                     response.StatusCode = 404;
                     response.Message = "Delivery Man Not Found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> GetAllOrders()
+        {
+            Response response = new Response();
+
+            try
+            {
+                var orders = await _dbContext.Orders.OrderByDescending(x => x.OrderDate).Select(x => new OrderDTO
+                {
+                    OrderId = x.OrderId,
+                    Orderer = x.Orderer,
+                    Address = x.Address,
+                    PhoneNumber = x.PhoneNumber,
+                    OrderDate = x.OrderDate,
+                    OrderState = x.OrderState,
+                    stateString = x.OrderState.ToString(),
+                    TotalPrice = x.TotalPrice,
+                    DeliveryManId = x.DeliveryManId,
+                    DeliveredDate = x.DeliveredDate,
+                    CartItems = x.CartItems.Select(y => new CartDTO
+                    {
+                        Name = y.PizzaPrice != null
+                                    ? y.PizzaPrice.Pizza!.PizzaName.ToString()
+                                    : y.OtherDishes!.Name.ToString(),
+                        SizeString = y.PizzaPrice != null
+                                    ? y.PizzaPrice.PizzaSize.ToString()
+                                    : null,
+                        Quantity = y.Quantity,
+                        TotalPrice = y.TotalPrice,
+                    }).ToList(),
+                }).ToListAsync();
+
+                if (orders.Any())
+                {
+                    response.StatusCode = 200;
+                    response.Orders = orders;
+                }
+                else
+                {
+                    response.StatusCode = 200;
+                    response.Orders = orders;
+                    response.Message = "There Is No Order.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> AdminGetSelectedOrder(long orderId)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var order = await _dbContext.Orders.Where(x => x.OrderId == orderId).Select(x => new OrderDTO
+                {
+                    OrderId = x.OrderId,
+                    Orderer = x.Orderer,
+                    Address = x.Address,
+                    PhoneNumber = x.PhoneNumber,
+                    OrderDate = x.OrderDate,
+                    OrderState = x.OrderState,
+                    stateString = x.OrderState.ToString(),
+                    TotalPrice = x.TotalPrice,
+                    DeliveryManId = x.DeliveryManId,
+                    DeliveredDate = x.DeliveredDate,
+                    CartItems = x.CartItems.Select(y => new CartDTO
+                    {
+                        Name = y.PizzaPrice != null
+                                    ? y.PizzaPrice.Pizza!.PizzaName.ToString()
+                                    : y.OtherDishes!.Name.ToString(),
+                        SizeString = y.PizzaPrice != null
+                                    ? y.PizzaPrice.PizzaSize.ToString()
+                                    : null,
+                        Quantity = y.Quantity,
+                        TotalPrice = y.TotalPrice,
+                    }).ToList(),
+                }).FirstOrDefaultAsync();
+
+                if (order != null)
+                {
+                    response.StatusCode = 200;
+                    response.Order = order;
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Order Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> ViewWork(string? username)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var deliveryMan = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username.Equals(username));
+
+                if (deliveryMan != null)
+                {
+                    var orders = await _dbContext.Orders.OrderByDescending(x => x.OrderDate).Where(x => x.DeliveryManId == deliveryMan.Id).Select(x => new OrderDTO
+                    {
+                        OrderId = x.OrderId,
+                        Orderer = x.Orderer,
+                        Address = x.Address,
+                        PhoneNumber = x.PhoneNumber,
+                        OrderDate = x.OrderDate,
+                        OrderState = x.OrderState,
+                        stateString = x.OrderState.ToString(),
+                        TotalPrice = x.TotalPrice,
+                        DeliveryManId = x.DeliveryManId,
+                        DeliveredDate = x.DeliveredDate,
+                        CartItems = x.CartItems.Select(y => new CartDTO
+                        {
+                            Name = y.PizzaPrice != null
+                                        ? y.PizzaPrice.Pizza!.PizzaName.ToString()
+                                        : y.OtherDishes!.Name.ToString(),
+                            SizeString = y.PizzaPrice != null
+                                        ? y.PizzaPrice.PizzaSize.ToString()
+                                        : null,
+                            Quantity = y.Quantity,
+                            TotalPrice = y.TotalPrice,
+                        }).ToList(),
+                    }).ToListAsync();
+
+                    if (orders.Any())
+                    {
+                        response.StatusCode = 200;
+                        response.Orders = orders;
+                    }
+                    else
+                    {
+                        response.StatusCode = 200;
+                        response.Orders = orders;
+                        response.Message = "No Work At The Present Time";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Delivery Man Not Found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> DmGetSelectedOrder(string? username, long orderId)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var deliveryMan = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username.Equals(username));
+
+                if (deliveryMan != null)
+                {
+                    var order = await _dbContext.Orders.Where(x => x.DeliveryManId == deliveryMan.Id && x.OrderId == orderId).Select(x => new OrderDTO
+                    {
+                        OrderId = x.OrderId,
+                        Orderer = x.Orderer,
+                        Address = x.Address,
+                        PhoneNumber = x.PhoneNumber,
+                        OrderDate = x.OrderDate,
+                        OrderState = x.OrderState,
+                        stateString = x.OrderState.ToString(),
+                        TotalPrice = x.TotalPrice,
+                        DeliveryManId = x.DeliveryManId,
+                        DeliveredDate = x.DeliveredDate,
+                        CartItems = x.CartItems.Select(y => new CartDTO
+                        {
+                            Name = y.PizzaPrice != null
+                                        ? y.PizzaPrice.Pizza!.PizzaName.ToString()
+                                        : y.OtherDishes!.Name.ToString(),
+                            SizeString = y.PizzaPrice != null
+                                        ? y.PizzaPrice.PizzaSize.ToString()
+                                        : null,
+                            Quantity = y.Quantity,
+                            TotalPrice = y.TotalPrice,
+                        }).ToList(),
+                    }).FirstOrDefaultAsync();
+
+                    if (order != null)
+                    {
+                        response.StatusCode = 200;
+                        response.Order = order;
+                    }
+                    else
+                    {
+                        response.StatusCode = 404;
+                        response.Message = "Order Not Found";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 404;
+                    response.Message = "Delivery Man Not Found";
                 }
             }
             catch (Exception ex)

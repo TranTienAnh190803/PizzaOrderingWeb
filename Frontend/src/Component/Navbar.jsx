@@ -163,21 +163,10 @@ export default function Navbar({ newAvatar, updateCart }) {
                   <li>
                     <Link
                       className="dropdown-item d-flex align-items-center gap-3 px-3 py-2"
-                      to="/"
+                      to="/user/orders"
                     >
                       <FaPizzaSlice />
                       Order
-                    </Link>
-                  </li>
-                )}
-                {UserService.isDeliveryMan() && (
-                  <li>
-                    <Link
-                      className="dropdown-item d-flex align-items-center gap-3 px-3 py-2"
-                      to="/"
-                    >
-                      <FaMoneyBillAlt />
-                      Salary
                     </Link>
                   </li>
                 )}

@@ -16,6 +16,11 @@ export default function CartPage() {
   });
   const [remove, setRemove] = useState(false);
   const [popup, setPopup] = useState(false);
+  const [orderForm, setOrderForm] = useState({
+    orderer: "",
+    address: "",
+    phoneNumber: "",
+  });
 
   const fetchUserCart = async () => {
     if (UserService.isUser()) {
@@ -32,8 +37,25 @@ export default function CartPage() {
     }
   };
 
+  const fetchUserInfo = async () => {
+    if (UserService.isUser()) {
+      const token = localStorage.getItem("token");
+      const response = await UserService.getProfile(token);
+
+      if (response.statusCode === 200) {
+        const user = response.userDTO;
+        setOrderForm({
+          orderer: user.fullname,
+          address: user.address,
+          phoneNumber: user.phoneNumber,
+        });
+      }
+    }
+  };
+
   useEffect(() => {
     fetchUserCart();
+    fetchUserInfo();
   }, []);
 
   const handleRemoveItem = async (id) => {
@@ -52,6 +74,26 @@ export default function CartPage() {
 
   const handleClosePopup = () => {
     setPopup(false);
+  };
+
+  const handleInputChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    setOrderForm({ ...orderForm, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (UserService.isUser()) {
+      const token = localStorage.getItem("token");
+      const response = await OrderService.orderFood(token, orderForm);
+      alert(response.message);
+
+      if (response.statusCode === 200) {
+        window.location.reload();
+      }
+    }
   };
 
   return (
@@ -145,7 +187,7 @@ export default function CartPage() {
               <b>Information</b>
             </h2>
             <hr />
-            <div className="p-3">
+            <form className="p-3" onSubmit={handleSubmit}>
               <div className="mb-4">
                 <p>
                   <b>Orderer: </b>
@@ -154,6 +196,9 @@ export default function CartPage() {
                   type="text"
                   name="orderer"
                   className="form-control border-secondary"
+                  value={orderForm.orderer}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
               <div className="mb-4">
@@ -164,6 +209,9 @@ export default function CartPage() {
                   type="text"
                   name="address"
                   className="form-control border-secondary"
+                  value={orderForm.address}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
               <div className="mb-4">
@@ -174,11 +222,14 @@ export default function CartPage() {
                   type="text"
                   name="phoneNumber"
                   className="form-control border-secondary"
+                  value={orderForm.phoneNumber}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
 
               <button className={style["popup-btn"]}>Order</button>
-            </div>
+            </form>
           </div>
         </div>
       )}

@@ -23,5 +23,13 @@ namespace Backend.Service
         public Task<Response> CancelOrder(string? username, long orderId);
         
         public Task<Response> DeliveryVerifying(string? username, long orderId);
+        
+        public Task<Response> GetAllOrders();
+        
+        public Task<Response> AdminGetSelectedOrder(long orderId);
+        
+        public Task<Response> ViewWork(string? username);
+        
+        public Task<Response> DmGetSelectedOrder(string? username, long orderId);
     }
 }

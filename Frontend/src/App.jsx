@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import LoginPage from "./Page/Login/LoginPage";
 import RegisterPage from "./Page/Register/RegisterPage";
 import HomePage from "./Page/Home/HomePage";
@@ -15,12 +15,15 @@ import DMManagement from "./Page/DeliveryManManagement/DMManagement";
 import DMRegistration from "./Page/DeliveryManRegistration/DMRegistration";
 import DMProfile from "./Page/DeliveryManProfile/DMProfile";
 import CartPage from "./Page/Cart/CartPage";
+import ScrollToTop from "./Component/ScrollToTop";
+import UserOrdersPage from "./Page/UserOrders/UserOrdersPage";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <>
+          <ScrollToTop />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/registration" element={<RegisterPage />} />
@@ -71,6 +74,7 @@ function App() {
             {UserService.isUser() && (
               <>
                 <Route path="/user/cart" element={<CartPage />} />
+                <Route path="/user/orders" element={<UserOrdersPage />} />
               </>
             )}
           </Routes>

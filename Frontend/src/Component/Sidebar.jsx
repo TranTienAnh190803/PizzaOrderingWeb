@@ -91,7 +91,7 @@ export default function Sidebar({ newAvatar }) {
         </Link>
       ) : UserService.isUser() ? (
         <Link
-          to="/user/order"
+          to="/user/orders"
           className="list-group-item list-group-item-action border-0"
         >
           <FaPizzaSlice className="me-3" />

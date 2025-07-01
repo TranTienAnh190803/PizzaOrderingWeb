@@ -80,7 +80,7 @@ namespace Backend.Controllers
 
         [Authorize(Roles = "USER")]
         [HttpGet]
-        [Route("get-selected-order/{orderId}")]
+        [Route("user/get-selected-order/{orderId}")]
         public async Task<ActionResult<Response>> GetSelectedOrdered([FromRoute] long orderId)
         {
             string username = User.Identity.Name;
@@ -114,6 +114,44 @@ namespace Backend.Controllers
         {
             string username = User.Identity.Name;
             Response response = await _orderService.DeliveryVerifying(username, orderId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet]
+        [Route("get-all-orders")]
+        public async Task<ActionResult<Response>> GetAllOrders()
+        {
+            Response response = await _orderService.GetAllOrders();
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet]
+        [Route("admin/get-selected-order/{orderId}")]
+        public async Task<ActionResult<Response>> AdminGetSelectedOrder([FromRoute] long orderId)
+        {
+            Response response = await _orderService.AdminGetSelectedOrder(orderId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "DELIVERY")]
+        [HttpGet]
+        [Route("view-work")]
+        public async Task<ActionResult<Response>> ViewWork()
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.ViewWork(username);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "DELIVERY")]
+        [HttpGet]
+        [Route("delivery-man/get-selected-order/{orderId}")]
+        public async Task<ActionResult<Response>> DmGetSelectedOrder([FromRoute] long orderId)
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.DmGetSelectedOrder(username, orderId);
             return StatusCode(response.StatusCode, response);
         }
     }

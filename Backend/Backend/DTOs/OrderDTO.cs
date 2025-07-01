@@ -18,6 +18,8 @@ namespace Backend.DTOs
 
         public OrderState OrderState { get; set; }
 
+        public required string stateString { get; set; }
+
         public required ICollection<CartDTO> CartItems { get; set; }
 
         public required DateTime OrderDate { get; set; }
