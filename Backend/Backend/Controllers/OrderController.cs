@@ -1,4 +1,5 @@
 ﻿using Backend.DTOs;
+using Backend.Enums;
 using Backend.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -152,6 +153,15 @@ namespace Backend.Controllers
         {
             string username = User.Identity.Name;
             Response response = await _orderService.DmGetSelectedOrder(username, orderId);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet]
+        [Route("orders-filtering/{orderState}")]
+        public async Task<ActionResult<Response>> OrdersFiltering([FromRoute] OrderState orderState)
+        {
+            Response response = await _orderService.OrdersFiltering(orderState);
             return StatusCode(response.StatusCode, response);
         }
     }

@@ -17,6 +17,7 @@ import DMProfile from "./Page/DeliveryManProfile/DMProfile";
 import CartPage from "./Page/Cart/CartPage";
 import ScrollToTop from "./Component/ScrollToTop";
 import UserOrdersPage from "./Page/UserOrders/UserOrdersPage";
+import OrdersMangementPage from "./Page/OrdersManagement/OrdersManagementPage";
 
 function App() {
   return (
@@ -65,6 +66,10 @@ function App() {
                 <Route
                   path="/admin/dm-registration"
                   element={<DMRegistration />}
+                />
+                <Route
+                  path="/admin/orders-management"
+                  element={<OrdersMangementPage />}
                 />
                 <Route path="/admin/dm-info/:dmId" element={<DMProfile />} />
                 <Route path="/admin/dm-mangement" element={<DMManagement />} />

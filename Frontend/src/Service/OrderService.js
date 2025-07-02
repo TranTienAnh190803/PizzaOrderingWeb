@@ -89,7 +89,7 @@ class OrderService{
 
     static async userGetSelectedOrder(token, orderId) {
         try {
-            const response = await axios.get(`${this.BASE_URL}user/get-selected-order/${orderId}`, {
+            const response = await axios.get(`${this.BASE_URL}/user/get-selected-order/${orderId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -103,7 +103,7 @@ class OrderService{
 
     static async acceptOrder(token, orderId, deliveryManId) {
         try {
-            const response = await axios.patch(`${this.BASE_URL}accept-order/${orderId}?deliveryManId=${deliveryManId}`, null, {
+            const response = await axios.patch(`${this.BASE_URL}/accept-order/${orderId}?deliveryManId=${deliveryManId}`, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -117,7 +117,7 @@ class OrderService{
 
     static async cancelOrder(token, orderId) {
         try {
-            const response = await axios.patch(`${this.BASE_URL}cancel-order/${orderId}`, null, {
+            const response = await axios.patch(`${this.BASE_URL}/cancel-order/${orderId}`, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -131,7 +131,7 @@ class OrderService{
 
     static async deliveryVerifying(token, orderId) {
         try {
-            const response = await axios.patch(`${this.BASE_URL}delivery-verifying/${orderId}`, null, {
+            const response = await axios.patch(`${this.BASE_URL}/delivery-verifying/${orderId}`, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -188,6 +188,20 @@ class OrderService{
     static async dmGetSelectedOrder(token, orderId) {
         try {
             const response = await axios.get(`${this.BASE_URL}/delivery-man/get-selected-order/${orderId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
+
+    static async ordersFiltering(token, orderState) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/orders-filtering/${orderState}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

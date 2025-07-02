@@ -1,5 +1,6 @@
 ﻿using Backend.Data;
 using Backend.DTOs;
+using Backend.Enums;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -813,6 +814,58 @@ namespace Backend.Service.Implement
                 {
                     response.StatusCode = 404;
                     response.Message = "Delivery Man Not Found";
+                }
+            }
+            catch (Exception ex)
+            {
+                response.StatusCode = 500;
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> OrdersFiltering(OrderState orderState)
+        {
+            Response response = new Response();
+
+            try
+            {
+                var orders = await _dbContext.Orders.Where(x => x.OrderState == orderState).OrderByDescending(x => x.OrderDate).Select(x => new OrderDTO
+                {
+                    OrderId = x.OrderId,
+                    Orderer = x.Orderer,
+                    Address = x.Address,
+                    PhoneNumber = x.PhoneNumber,
+                    OrderDate = x.OrderDate,
+                    OrderState = x.OrderState,
+                    stateString = x.OrderState.ToString(),
+                    TotalPrice = x.TotalPrice,
+                    DeliveryManId = x.DeliveryManId,
+                    DeliveredDate = x.DeliveredDate,
+                    CartItems = x.CartItems.Select(y => new CartDTO
+                    {
+                        Name = y.PizzaPrice != null
+                                    ? y.PizzaPrice.Pizza!.PizzaName.ToString()
+                                    : y.OtherDishes!.Name.ToString(),
+                        SizeString = y.PizzaPrice != null
+                                    ? y.PizzaPrice.PizzaSize.ToString()
+                                    : null,
+                        Quantity = y.Quantity,
+                        TotalPrice = y.TotalPrice,
+                    }).ToList(),
+                }).ToListAsync();
+
+                if (orders.Any())
+                {
+                    response.StatusCode = 200;
+                    response.Orders = orders;
+                }
+                else
+                {
+                    response.StatusCode = 200;
+                    response.Orders = orders;
+                    response.Message = "There Is No Order.";
                 }
             }
             catch (Exception ex)

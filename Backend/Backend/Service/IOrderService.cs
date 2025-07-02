@@ -1,4 +1,5 @@
 ﻿using Backend.DTOs;
+using Backend.Enums;
 
 namespace Backend.Service
 {
@@ -31,5 +32,7 @@ namespace Backend.Service
         public Task<Response> ViewWork(string? username);
         
         public Task<Response> DmGetSelectedOrder(string? username, long orderId);
+        
+        public Task<Response> OrdersFiltering(OrderState orderState);
     }
 }
