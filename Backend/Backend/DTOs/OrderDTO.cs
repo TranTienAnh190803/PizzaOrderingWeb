@@ -27,6 +27,9 @@ namespace Backend.DTOs
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public DateTime? DeliveredDate { get; set; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public DateOnly? ApprovedDate { get; set; }
+
         [Precision(18, 2)]
         public decimal TotalPrice { get; set; }
 
@@ -35,5 +38,8 @@ namespace Backend.DTOs
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public int? DeliveryManId { get; set; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? DeliveryManName { get; set; }
     }
 }

@@ -185,14 +185,35 @@ export default function UserHome() {
           ></button>
         </div>
         <div className="carousel-inner">
-          <div className="carousel-item active">
+          <div className="carousel-item position-relative active">
             <img src={slider1} className="d-block w-100" alt="slider" />
+            <div className={style["home-content"]}>
+              <h1 className="mb-5 text-center">
+                <b>Welcome To TTAPizza.</b>
+              </h1>
+              <a href="#Dishes" className="btn btn-lg btn-outline-success">
+                Order Food
+              </a>
+            </div>
           </div>
-          <div className="carousel-item">
+          <div className="carousel-item position-relative">
             <img src={slider2} className="d-block w-100" alt="slider" />
+            <div className={style["home-content"]}>
+              <h1 className="mb-5 text-center w-75 text-success">
+                <b>
+                  There are lots of pizzas and delicious food waiting for you.
+                </b>
+              </h1>
+            </div>
           </div>
-          <div className="carousel-item">
+          <div className="carousel-item position-relative">
             <img src={slider3} className="d-block w-100" alt="slider" />
+            <div className={style["home-content"]}>
+              <h1 className="mb-5 text-center w-75 text-danger">
+                <b>Special Discount</b> <br />
+                <b>Up To 50%</b>
+              </h1>
+            </div>
           </div>
         </div>
         <button
@@ -213,7 +234,7 @@ export default function UserHome() {
           <span className="carousel-control-next-icon"></span>
         </button>
       </div>
-      <nav className={style["navbar2"]}>
+      <nav id="Dishes" className={style["navbar2"]}>
         <div className={style["item"]} id="pizza" onClick={handleSelection}>
           <GiFullPizza size={50} /> <p className="m-0">Pizza</p>
         </div>

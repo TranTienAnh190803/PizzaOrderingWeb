@@ -34,5 +34,7 @@ namespace Backend.Service
         public Task<Response> DmGetSelectedOrder(string? username, long orderId);
         
         public Task<Response> OrdersFiltering(OrderState orderState);
+        
+        public Task<Response> DeliveryFiltering(string? username, OrderState orderState);
     }
 }

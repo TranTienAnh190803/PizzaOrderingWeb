@@ -164,5 +164,15 @@ namespace Backend.Controllers
             Response response = await _orderService.OrdersFiltering(orderState);
             return StatusCode(response.StatusCode, response);
         }
+
+        [Authorize(Roles = "DELIVERY")]
+        [HttpGet]
+        [Route("delivery-filtering/{orderState}")]
+        public async Task<ActionResult<Response>> DeliveryFiltering([FromRoute] OrderState orderState)
+        {
+            string username = User.Identity.Name;
+            Response response = await _orderService.DeliveryFiltering(username, orderState);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

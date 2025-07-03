@@ -278,6 +278,12 @@ export default function OrdersMangementPage() {
                   >
                     <b>State: </b> {selectedOrder.stateString}
                   </p>
+                  {selectedOrder.orderState !== 0 &&
+                    selectedOrder.orderState !== 3 && (
+                      <p>
+                        <b>Delivery Man: </b> {selectedOrder.deliveryManName}
+                      </p>
+                    )}
                 </div>
               </div>
               <div className="my-2">

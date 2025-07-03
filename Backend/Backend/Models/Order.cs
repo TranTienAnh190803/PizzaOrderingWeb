@@ -23,6 +23,8 @@ namespace Backend.Models
         [Required]
         public required DateTime OrderDate { get; set; }
 
+        public DateOnly? ApprovedDate { get; set; }
+
         public DateTime? DeliveredDate { get; set; }
 
         public OrderState OrderState { get; set; }

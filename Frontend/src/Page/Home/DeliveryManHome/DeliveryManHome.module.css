@@ -1,0 +1,98 @@
+.image-box{
+    width: 100%;
+    position: relative;
+    margin-top: 5rem;
+}
+
+.image-box .home-content{
+    width: 45%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    border-top-right-radius: 45%;
+    border-bottom-right-radius: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper{
+    margin-top: 3rem;
+    margin-bottom: 6rem;
+    min-height: 100vh;
+}
+
+.orders {
+    background-color: white;
+    border-radius: 30px;
+    padding: 20px;
+    width: 85%;
+    height: fit-content;
+}
+
+.wrapper .orders .order{
+    border: solid 1px rgba(0, 0, 0, 0.1);
+    padding: 3%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.wrapper .orders .order:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+/* popup */
+.popup{
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup .information{
+    background-color: white;
+    width: 75%;
+    border-radius: 30px;
+    padding: 2%;
+    position: relative;
+    overflow: hidden;
+}
+
+.popup .close-btn{
+    border: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    padding: 10px;
+}
+
+.popup .close-btn:hover{
+    background-color: gray;
+    color: black;
+}
+
+@media only screen and (max-width: 550px) {
+    .image-box .home-content{
+        width: 75%;
+        font-size: 3rem;
+    }
+
+    .popup .information{
+        width: 100%;
+        height: 100vh;
+        border-radius: 0;
+        overflow: scroll;
+    }
+}

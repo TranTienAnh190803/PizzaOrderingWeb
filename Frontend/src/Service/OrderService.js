@@ -212,6 +212,20 @@ class OrderService{
             return error.response.data;
         }
     }
+
+    static async deliveryFiltering(token, orderState) {
+        try {
+            const response = await axios.get(`${this.BASE_URL}/delivery-filtering/${orderState}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            return error.response.data;
+        }
+    }
 }
 
 export default OrderService;

@@ -451,6 +451,7 @@ namespace Backend.Service.Implement
                 {
                     selectedOrder.OrderState = Enums.OrderState.Approve;
                     selectedOrder.DeliveryMan = deliveryMan;
+                    selectedOrder.ApprovedDate = DateOnly.FromDateTime(DateTime.Today);
 
                     int result = await _dbContext.SaveChangesAsync();
 
@@ -668,6 +669,7 @@ namespace Backend.Service.Implement
                     stateString = x.OrderState.ToString(),
                     TotalPrice = x.TotalPrice,
                     DeliveryManId = x.DeliveryManId,
+                    DeliveryManName = x.DeliveryMan != null ? x.DeliveryMan.Fullname : null,
                     DeliveredDate = x.DeliveredDate,
                     CartItems = x.CartItems.Select(y => new CartDTO
                     {
@@ -712,7 +714,7 @@ namespace Backend.Service.Implement
 
                 if (deliveryMan != null)
                 {
-                    var orders = await _dbContext.Orders.OrderByDescending(x => x.OrderDate).Where(x => x.DeliveryManId == deliveryMan.Id).Select(x => new OrderDTO
+                    var orders = await _dbContext.Orders.OrderByDescending(x => x.OrderDate).Where(x => x.DeliveryManId == deliveryMan.Id && x.ApprovedDate == DateOnly.FromDateTime(DateTime.Today)).Select(x => new OrderDTO
                     {
                         OrderId = x.OrderId,
                         Orderer = x.Orderer,
@@ -872,6 +874,75 @@ namespace Backend.Service.Implement
             {
                 response.StatusCode = 500;
                 response.Message = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<Response> DeliveryFiltering(string? username, OrderState orderState)
+        {
+            Response response = new Response();
+
+            try
+            {
+                if (orderState == OrderState.Approve || orderState == OrderState.Delivered)
+                {
+                    var deliveryMan = await _dbContext.Users.FirstOrDefaultAsync(x => x.Username.Equals(username));
+
+                    if (deliveryMan != null)
+                    {
+                        var orders = await _dbContext.Orders.OrderByDescending(x => x.OrderDate).Where(x => x.DeliveryManId == deliveryMan.Id && x.OrderState == orderState && x.ApprovedDate == DateOnly.FromDateTime(DateTime.Today)).Select(x => new OrderDTO
+                        {
+                            OrderId = x.OrderId,
+                            Orderer = x.Orderer,
+                            Address = x.Address,
+                            PhoneNumber = x.PhoneNumber,
+                            OrderDate = x.OrderDate,
+                            OrderState = x.OrderState,
+                            stateString = x.OrderState.ToString(),
+                            TotalPrice = x.TotalPrice,
+                            DeliveryManId = x.DeliveryManId,
+                            DeliveredDate = x.DeliveredDate,
+                            CartItems = x.CartItems.Select(y => new CartDTO
+                            {
+                                Name = y.PizzaPrice != null
+                                            ? y.PizzaPrice.Pizza!.PizzaName.ToString()
+                                            : y.OtherDishes!.Name.ToString(),
+                                SizeString = y.PizzaPrice != null
+                                            ? y.PizzaPrice.PizzaSize.ToString()
+                                            : null,
+                                Quantity = y.Quantity,
+                                TotalPrice = y.TotalPrice,
+                            }).ToList(),
+                        }).ToListAsync();
+
+                        if (orders.Any())
+                        {
+                            response.StatusCode = 200;
+                            response.Orders = orders;
+                        }
+                        else
+                        {
+                            response.StatusCode = 200;
+                            response.Orders = orders;
+                            response.Message = "No Work At The Present Time";
+                        }
+                    }
+                    else
+                    {
+                        response.StatusCode = 404;
+                        response.Message = "Delivery Man Not Found.";
+                    }
+                }
+                else
+                {
+                    response.StatusCode = 400;
+                    response.Message = "You Are Not Allowed To Use This Function.";
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
 
             return response;
