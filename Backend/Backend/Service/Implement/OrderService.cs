@@ -32,12 +32,12 @@ namespace Backend.Service.Implement
                     if (cartItem.PizzaId != null && cartItem.SelectedSize != null)
                     {
                         checkCart = await _dbContext.CartItems.FirstOrDefaultAsync
-                            (x => x.User == user && (x.PizzaId == cartItem.PizzaId && x.SelectedSize == cartItem.SelectedSize));
+                            (x => x.User == user && x.OrderId == null && (x.PizzaId == cartItem.PizzaId && x.SelectedSize == cartItem.SelectedSize));
                     }
                     else if (cartItem.DishesId != null)
                     {
                         checkCart = await _dbContext.CartItems.FirstOrDefaultAsync
-                            (x => x.User == user && (x.DishesId == cartItem.DishesId));
+                            (x => x.User == user && x.OrderId == null && (x.DishesId == cartItem.DishesId));
                     }
 
 
