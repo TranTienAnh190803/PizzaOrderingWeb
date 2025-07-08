@@ -23,8 +23,8 @@ obj/
 *.swp
 
 # 🔐 Secrets & config (nếu chứa thông tin nhạy cảm)
-appsettings.json
-appsettings.Development.json
+# appsettings.json
+# appsettings.Development.json
 secrets.json
 **/secrets.json
 

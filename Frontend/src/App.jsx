@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import LoginPage from "./Page/Login/LoginPage";
 import RegisterPage from "./Page/Register/RegisterPage";
 import HomePage from "./Page/Home/HomePage";
@@ -20,6 +26,22 @@ import UserOrdersPage from "./Page/UserOrders/UserOrdersPage";
 import OrdersMangementPage from "./Page/OrdersManagement/OrdersManagementPage";
 
 function App() {
+  const handleExpiredToken = () => {
+    if (UserService.isAuthenticated()) {
+      const token = localStorage.getItem("token");
+
+      if (UserService.isTokenExpired(token)) {
+        UserService.logout();
+        alert("Login Session Expired");
+        window.location.href = "/login";
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleExpiredToken();
+  }, []);
+
   return (
     <>
       <BrowserRouter>
@@ -82,6 +104,8 @@ function App() {
                 <Route path="/user/orders" element={<UserOrdersPage />} />
               </>
             )}
+
+            <Route path="*" element={<Navigate to={"/"} />} />
           </Routes>
         </>
       </BrowserRouter>

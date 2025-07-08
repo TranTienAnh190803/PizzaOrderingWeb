@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 class UserService {
     static BASE_URL = "https://localhost:7149/User";
@@ -183,6 +184,17 @@ class UserService {
         if (this.isAuthenticated() && role === "USER")
             return true;
         return false;
+    }
+
+    // JWT
+    static isTokenExpired(token) {
+        try {
+            const decode = jwtDecode(token);
+            const current = Date.now() / 1000;
+            return decode.exp < current;
+        } catch (error) {
+            return true;
+        }
     }
 
     // Logout
